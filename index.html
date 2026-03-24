@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌟 小学AI提示词编程 - 学习平台</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- 顶部导航栏 -->
+  <header class="top-bar">
+    <div class="logo">🤖 <span>AI编程小课堂</span></div>
+    <div class="api-config">
+      <button id="configBtn" class="btn btn-config" onclick="toggleApiConfig()">设置API</button>
+      <div id="apiConfigPanel" class="api-config-panel hidden">
+        <label>DeepSeek API Key：</label>
+        <input type="password" id="apiKeyInput" placeholder="输入你的 API Key">
+        <button class="btn btn-save" onclick="saveApiKey()">保存</button>
+        <p class="hint">💡 前往 <a href="https://platform.deepseek.com" target="_blank">platform.deepseek.com</a> 获取</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="main-layout">
+    <!-- 左侧课程导航 -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <h2>📚 课程目录</h2>
+      </div>
+      <div class="level-tabs">
+        <button class="level-tab active" data-level="low" onclick="switchLevel('low')">🌱 低段<br><small>1-2年级</small></button>
+        <button class="level-tab" data-level="mid" onclick="switchLevel('mid')">🌿 中段<br><small>3-4年级</small></button>
+        <button class="level-tab" data-level="high" onclick="switchLevel('high')">🌳 高段<br><small>5-6年级</small></button>
+      </div>
+      <nav class="lesson-list" id="lessonList">
+        <!-- JS动态生成 -->
+      </nav>
+    </aside>
+
+    <!-- 中间内容区 -->
+    <main class="content" id="contentArea">
+      <!-- 欢迎页 -->
+      <div class="welcome" id="welcomePage">
+        <div class="welcome-hero">
+          <div class="welcome-icon">🚀</div>
+          <h1>欢迎来到 AI 编程小课堂！</h1>
+          <p class="welcome-subtitle">用文字指挥AI，人人都能做编程小达人</p>
+        </div>
+        <div class="features">
+          <div class="feature-card">
+            <div class="feature-icon">💬</div>
+            <h3>文字即代码</h3>
+            <p>不用记语法，用中文指令操控AI</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <h3>精准表达</h3>
+            <p>把想法写成清晰文字指令</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🤝</div>
+            <h3>AI协作</h3>
+            <p>学会驾驭AI，培养数字素养</p>
+          </div>
+        </div>
+        <div class="quick-start">
+          <h2>🎒 快速开始</h2>
+          <p>👈 从左侧选择你的年级和课程，开始AI编程之旅吧！</p>
+        </div>
+      </div>
+      <!-- 课程详情页 -->
+      <div class="lesson-detail hidden" id="lessonDetail">
+        <div class="lesson-header">
+          <span class="lesson-badge" id="lessonBadge"></span>
+          <h1 id="lessonTitle"></h1>
+        </div>
+        <div class="lesson-body" id="lessonBody"></div>
+        <button class="btn btn-practice" id="practiceBtn" onclick="startPractice()">
+          🚀 开始AI练习
+        </button>
+      </div>
+    </main>
+
+    <!-- 右侧AI对话区 -->
+    <aside class="chat-panel" id="chatPanel">
+      <div class="chat-header">
+        <h2>🤖 AI助教</h2>
+        <span class="chat-status" id="chatStatus">就绪</span>
+      </div>
+      <div class="chat-hint" id="chatHint">
+        <p>👋 你好！我是AI助教，选择一节课后点击"开始AI练习"，我会帮你完成任务！</p>
+        <p>你也可以直接在下面输入任何问题或指令。</p>
+      </div>
+      <div class="chat-messages" id="chatMessages"></div>
+      <div class="chat-input-area">
+        <textarea id="chatInput" placeholder="输入你的文字指令..." rows="3" onkeydown="handleKeyDown(event)"></textarea>
+        <div class="chat-actions">
+          <button class="btn btn-clear" onclick="clearChat()">🗑️ 清空</button>
+          <button class="btn btn-send" id="sendBtn" onclick="sendMessage()">发送 ✨</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- 代码预览弹窗 -->
+  <div class="code-preview-modal" id="codePreviewModal">
+    <div class="code-preview-container">
+      <div class="code-preview-header">
+        <span>🎨 代码运行效果</span>
+        <button class="code-preview-close" onclick="closeCodePreview()">✕ 关闭</button>
+      </div>
+      <iframe id="codePreviewFrame" sandbox="allow-scripts allow-same-origin" class="code-preview-iframe"></iframe>
+    </div>
+  </div>
+
+  <!-- 移动端切换按钮 -->
+  <div class="mobile-tabs">
+    <button class="mobile-tab active" onclick="showMobileView('sidebar')">📚 课程</button>
+    <button class="mobile-tab" onclick="showMobileView('content')">📖 内容</button>
+    <button class="mobile-tab" onclick="showMobileView('chat')">🤖 AI</button>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
+
