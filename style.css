@@ -369,7 +369,7 @@ body {
    CHAT PANEL — bubbly conversation
    ================================================ */
 .chat-panel {
-  width: 380px; min-width: 340px;
+  width: 440px; min-width: 380px;
   background: var(--card-glass);
   -webkit-backdrop-filter: blur(16px);
   backdrop-filter: blur(16px);
@@ -483,7 +483,9 @@ body {
   }
   .sidebar.show, .chat-panel.show, .content.show { display: flex; flex: 1; }
   .content.show { display: block; }
-  .content { padding: 1.2rem; }
+  .content { padding: 1.2rem; padding-bottom: 70px; }
+  .sidebar { padding-bottom: 70px; }
+  .chat-panel.show { padding-bottom: 60px; }
   .mobile-tabs {
     display: flex; position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
     background: var(--card-glass);
