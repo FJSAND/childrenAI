@@ -508,7 +508,17 @@ body {
     0%,100% { transform: translateY(0); }
     50% { transform: translateY(3px); }
   }
-  .chat-panel.show { padding-bottom: 60px; }
+  .chat-panel.show {
+    padding-bottom: 0;
+    max-height: calc(100vh - 54px - 52px);
+    overflow: hidden;
+  }
+  .chat-panel.show .chat-messages {
+    flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
+  }
+  .chat-panel.show .chat-input-area {
+    padding-bottom: calc(.9rem + 52px);
+  }
   .mobile-tabs {
     display: flex; position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
     background: var(--card-glass);
