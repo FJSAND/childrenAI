@@ -484,7 +484,30 @@ body {
   .sidebar.show, .chat-panel.show, .content.show { display: flex; flex: 1; }
   .content.show { display: block; }
   .content { padding: 1.2rem; padding-bottom: 70px; }
-  .sidebar { padding-bottom: 70px; }
+  .sidebar { padding-bottom: 0; }
+  .sidebar.show {
+    max-height: calc(100vh - 54px - 52px);
+    overflow: hidden;
+  }
+  .sidebar.show .lesson-list {
+    padding-bottom: 8px;
+    -webkit-mask-image: linear-gradient(to bottom, #000 82%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 82%, transparent 100%);
+  }
+  .sidebar.show .lesson-list::-webkit-scrollbar { width: 4px; }
+  .sidebar.show .lesson-list::-webkit-scrollbar-thumb {
+    background: rgba(255,107,107,.35); border-radius: 4px;
+  }
+  .sidebar.show .sidebar-header::after {
+    content: '↕ 上下滑动查看更多课程';
+    display: block; text-align: center;
+    font-size: .72rem; color: var(--ink-light); opacity: .6;
+    margin-top: 4px; animation: hintBounce 2s ease-in-out infinite;
+  }
+  @keyframes hintBounce {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(3px); }
+  }
   .chat-panel.show { padding-bottom: 60px; }
   .mobile-tabs {
     display: flex; position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
