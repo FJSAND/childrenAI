@@ -478,10 +478,10 @@ body {
 .mobile-tabs { display: none; }
 @media (max-width: 900px) {
   .main-layout { flex-direction: column; }
-  .sidebar, .chat-panel {
+  .sidebar, .chat-panel, .content {
     width: 100%; min-width: 100%; display: none; border: none;
   }
-  .sidebar.show, .chat-panel.show, .content.show { display: flex; flex: 1; }
+  .sidebar.show, .chat-panel.show { display: flex; flex: 1; }
   .content.show { display: block; }
   .content { padding: 1.2rem; padding-bottom: 70px; }
   .sidebar { padding-bottom: 0; }
@@ -510,14 +510,18 @@ body {
   }
   .chat-panel.show {
     padding-bottom: 0;
-    max-height: calc(100vh - 54px - 52px);
-    overflow: hidden;
+    position: fixed;
+    top: 54px; left: 0; right: 0;
+    bottom: 52px;
+    z-index: 50;
+    flex-direction: column;
   }
   .chat-panel.show .chat-messages {
     flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
+    min-height: 0;
   }
   .chat-panel.show .chat-input-area {
-    padding-bottom: calc(.9rem + 52px);
+    flex-shrink: 0;
   }
   .mobile-tabs {
     display: flex; position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
