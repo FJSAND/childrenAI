@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>小学AI提示词编程教材 - Home</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-tertiary-fixed": "#134a00",
+                        "tertiary-fixed": "#84fe58",
+                        "primary-fixed-dim": "#5291ff",
+                        "surface": "#f7f5ff",
+                        "on-surface-variant": "#515981",
+                        "on-secondary-fixed": "#453100",
+                        "surface-variant": "#d5dbff",
+                        "surface-container-low": "#efefff",
+                        "inverse-primary": "#4c8eff",
+                        "primary-container": "#6d9fff",
+                        "surface-container-high": "#dde1ff",
+                        "outline-variant": "#a3abd7",
+                        "secondary-fixed": "#ffca57",
+                        "surface-container-highest": "#d5dbff",
+                        "on-background": "#242c51",
+                        "tertiary": "#1e6a00",
+                        "on-error": "#ffefee",
+                        "on-primary-fixed": "#000000",
+                        "surface-dim": "#cad2ff",
+                        "inverse-on-surface": "#929bc6",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-dim": "#004ca5",
+                        "tertiary-fixed-dim": "#77ef4b",
+                        "outline": "#6c759e",
+                        "on-tertiary-container": "#1a5f00",
+                        "error-dim": "#9f0519",
+                        "on-tertiary-fixed-variant": "#1e6a00",
+                        "secondary": "#765600",
+                        "primary-fixed": "#6d9fff",
+                        "on-secondary-fixed-variant": "#694c00",
+                        "on-error-container": "#570008",
+                        "secondary-container": "#ffca57",
+                        "on-secondary-container": "#5d4300",
+                        "inverse-surface": "#020a2f",
+                        "background": "#f7f5ff",
+                        "primary": "#0058bc",
+                        "on-tertiary": "#d4ffbd",
+                        "secondary-fixed-dim": "#f9b900",
+                        "error": "#b31b25",
+                        "on-secondary": "#fff1dc",
+                        "on-surface": "#242c51",
+                        "surface-bright": "#f7f5ff",
+                        "surface-tint": "#0058bc",
+                        "on-primary-container": "#00214f",
+                        "on-primary": "#f0f2ff",
+                        "surface-container": "#e4e7ff"
+                    },
+                    fontFamily: {
+                        "headline": ["Plus Jakarta Sans"],
+                        "body": ["Lexend"],
+                        "label": ["Lexend"]
+                    },
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+        }
+        body {
+            font-family: 'Lexend', sans-serif;
+            background-color: #f7f5ff;
+            color: #242c51;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen pb-24 md:pb-0">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-6 py-4 w-full bg-[#f7f5ff] dark:bg-slate-900 sticky top-0 z-40">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center overflow-hidden shadow-lg border-2 border-white">
+<img class="w-full h-full object-cover" data-alt="cute friendly small white robot with glowing blue eyes in a bright 3d render style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgxPOCAJnfe9RoOCbZGkFAlvUuzg598aZgZbAAPQAyuZKdJFLDJByQlt-1vsWkkBsjlaERk6oEBAKir1cPYWHYYamuv32eKR9zlbd1meivmgwxETe3pFcaVd_54ObQC7a-hkuDdpd931dhYd6uVMYiub_6-JvNxsmK45y58X1EliQ5ZmIZNfj8xzRRnd1eU-uuWKbjQzhl6xs6PoSvg9kOUZZWqS-lHMoWcsO-55LXhFPpSmdPiz1O72Mhhcxw4j7X44xDSU5RMNU"/>
+</div>
+<div>
+<h1 class="font-['Plus_Jakarta_Sans'] text-2xl font-bold tracking-tight text-[#0058bc] dark:text-[#6d9fff]">Hi, Little Explorer!</h1>
+<p class="text-xs font-medium text-[#242c51] opacity-70">Ready for your AI adventure?</p>
+</div>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<nav class="flex gap-6">
+<a class="text-[#0058bc] font-bold hover:scale-105 transition-transform" href="#">Home</a>
+<a class="text-[#242c51] opacity-70 hover:scale-105 transition-transform" href="#">Challenges</a>
+<a class="text-[#242c51] opacity-70 hover:scale-105 transition-transform" href="#">Studio</a>
+<a class="text-[#242c51] opacity-70 hover:scale-105 transition-transform" href="#">Profile</a>
+</nav>
+<button class="bg-secondary-container text-on-secondary-container px-6 py-2 rounded-xl font-bold flex items-center gap-2 hover:scale-105 transition-transform active:scale-95">
+<span class="material-symbols-outlined text-lg">stars</span>
+                120 Points
+            </button>
+</div>
+<button class="md:hidden bg-secondary-container text-on-secondary-container px-4 py-2 rounded-xl font-bold text-sm">
+            120 Pts
+        </button>
+</header>
+<main class="max-w-7xl mx-auto px-6 py-8">
+<!-- Hero Section: AI Welcome -->
+<section class="relative mb-12">
+<div class="bg-surface-container rounded-xl p-8 md:p-12 overflow-hidden flex flex-col md:flex-row items-center gap-8 relative">
+<!-- Decorative Elements -->
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary-container/20 rounded-full -mr-20 -mt-20 blur-3xl"></div>
+<div class="absolute bottom-0 left-0 w-48 h-48 bg-tertiary-container/20 rounded-full -ml-16 -mb-16 blur-3xl"></div>
+<div class="flex-1 z-10">
+<span class="inline-block px-4 py-1 rounded-full bg-primary/10 text-primary font-bold text-sm mb-4">TODAY'S QUEST</span>
+<h2 class="font-headline text-4xl md:text-5xl font-extrabold text-on-background leading-tight mb-4">
+                        What are we <span class="text-primary">coding</span> today?
+                    </h2>
+<p class="font-body text-lg text-on-surface-variant max-w-xl mb-8">
+                        The world of AI is your playground! Choose your level and start commanding your robot friends.
+                    </p>
+<div class="flex flex-wrap gap-4">
+<button class="bg-primary text-white px-8 py-4 rounded-xl font-bold text-lg shadow-[0px_8px_0px_0px_#004ca5] hover:translate-y-[2px] hover:shadow-[0px_6px_0px_0px_#004ca5] active:translate-y-[6px] active:shadow-none transition-all">
+                            Start Journey
+                        </button>
+<button class="bg-white text-primary px-8 py-4 rounded-xl font-bold text-lg border-2 border-primary/10 hover:bg-surface-container transition-colors">
+                            View Map
+                        </button>
+</div>
+</div>
+<div class="flex-1 relative z-10 flex justify-center">
+<div class="w-64 h-64 md:w-80 md:h-80 bg-surface-container-lowest rounded-xl shadow-[0px_20px_40px_rgba(36,44,81,0.06)] p-4 rotate-3 flex items-center justify-center">
+<img class="w-full h-full object-cover rounded-lg" data-alt="vibrant 3d illustration of a robot holding a pencil and a lightbulb on a pastel blue background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGOKMW4el4VYqJlcWWkxm9RB_CX5ZKiFqUGyIzf7pvpOJ7gUfB9Mbg9eHTmKpB96AwEEe8jRH_roUMCg2_vi_C_g0vFa1VLjdz0VPegfYe8sbTmMAH-ufvgTrM5HuAAPiV7x3Qr5VNeFmDhr0WnaKZwu_QHSiZQtkOyIb3jkgjeoHtvlZEmaYNbjOOx_HN-lRHTOMc5rJrHbicy_iBrnexBEKaAXwBID0V-bQ8hzPgp5Uf0mBiHyZ7Q4Gg656m3qdPe6GHakkXzJw"/>
+</div>
+<!-- Floating Robot Badge -->
+<div class="absolute -top-6 -left-6 w-24 h-24 bg-tertiary-container rounded-full flex items-center justify-center shadow-lg -rotate-12 border-4 border-white">
+<span class="material-symbols-outlined text-4xl text-on-tertiary-container" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Bento Grid: Progress & New Lesson -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+<!-- Progress Tracker -->
+<div class="md:col-span-2 bg-surface-container-lowest rounded-xl p-8 shadow-[0px_20px_40px_rgba(36,44,81,0.06)] flex flex-col justify-between">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="font-headline text-2xl font-bold mb-1">Weekly Mastery</h3>
+<p class="text-on-surface-variant font-medium">You've unlocked 4 new prompts this week!</p>
+</div>
+<span class="material-symbols-outlined text-3xl text-secondary">trending_up</span>
+</div>
+<div class="space-y-6">
+<div class="flex items-center gap-4">
+<div class="flex-1 h-4 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-primary-container w-[65%] rounded-full"></div>
+</div>
+<span class="font-bold text-primary">65%</span>
+</div>
+<div class="grid grid-cols-4 gap-4">
+<div class="bg-surface-container-low p-4 rounded-lg text-center">
+<span class="block text-2xl font-black text-on-background">12</span>
+<span class="text-xs text-on-surface-variant uppercase font-bold tracking-wider">Lessons</span>
+</div>
+<div class="bg-surface-container-low p-4 rounded-lg text-center">
+<span class="block text-2xl font-black text-on-background">08</span>
+<span class="text-xs text-on-surface-variant uppercase font-bold tracking-wider">Badges</span>
+</div>
+<div class="bg-surface-container-low p-4 rounded-lg text-center">
+<span class="block text-2xl font-black text-on-background">120</span>
+<span class="text-xs text-on-surface-variant uppercase font-bold tracking-wider">Points</span>
+</div>
+<div class="bg-surface-container-low p-4 rounded-lg text-center">
+<span class="block text-2xl font-black text-on-background">05</span>
+<span class="text-xs text-on-surface-variant uppercase font-bold tracking-wider">Streak</span>
+</div>
+</div>
+</div>
+</div>
+<!-- New Lesson Highlight -->
+<div class="bg-inverse-surface rounded-xl p-8 text-white relative overflow-hidden flex flex-col justify-between">
+<div class="z-10">
+<span class="inline-block px-3 py-1 bg-tertiary-container text-on-tertiary-container rounded-full text-xs font-bold mb-4">NEW LESSON</span>
+<h3 class="font-headline text-2xl font-bold mb-2">Magic Art Studio</h3>
+<p class="text-white/70 text-sm">Learn how to describe colors to the AI artist.</p>
+</div>
+<div class="z-10 mt-6">
+<button class="w-full bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 py-3 rounded-xl font-bold transition-colors">
+                        Try Now
+                    </button>
+</div>
+<!-- Abstract Glow -->
+<div class="absolute -bottom-10 -right-10 w-40 h-40 bg-primary-container/30 blur-3xl rounded-full"></div>
+<span class="material-symbols-outlined absolute top-4 right-4 text-white/20 text-6xl rotate-12" style="font-variation-settings: 'FILL' 1;">palette</span>
+</div>
+</section>
+<!-- Grade Level Cards -->
+<h3 class="font-headline text-2xl font-bold mb-8 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">school</span>
+            Choose Your Level
+        </h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Card 1: Low Grade -->
+<div class="group bg-surface-container-lowest rounded-xl p-6 shadow-[0px_20px_40px_rgba(36,44,81,0.06)] hover:shadow-xl transition-all border border-transparent hover:border-primary/10">
+<div class="w-16 h-16 bg-primary-container/20 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-4xl text-primary" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+</div>
+<span class="text-xs font-bold text-primary tracking-widest uppercase mb-2 block">Low Grade (1-2 Year)</span>
+<h4 class="font-headline text-2xl font-extrabold mb-3">AI Hear Me!</h4>
+<div class="bg-surface-container-low rounded-lg p-3 mb-6">
+<p class="text-on-surface font-medium flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">edit_note</span>
+                        认识文字指令
+                    </p>
+</div>
+<p class="text-on-surface-variant text-sm mb-8 leading-relaxed">
+                    Talk to the robot using simple words! Learn how AI understands your voice and text to draw pictures or tell stories.
+                </p>
+<div class="flex items-center justify-between mt-auto">
+<span class="text-xs font-bold text-on-surface-variant">8 Lessons</span>
+<button class="p-3 bg-primary text-white rounded-full group-hover:translate-x-2 transition-transform">
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Card 2: Middle Grade -->
+<div class="group bg-surface-container-lowest rounded-xl p-6 shadow-[0px_20px_40px_rgba(36,44,81,0.06)] hover:shadow-xl transition-all border border-transparent hover:border-secondary/10">
+<div class="w-16 h-16 bg-secondary-container/20 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-4xl text-secondary" style="font-variation-settings: 'FILL' 1;">edit_square</span>
+</div>
+<span class="text-xs font-bold text-secondary tracking-widest uppercase mb-2 block">Middle Grade (3-4 Year)</span>
+<h4 class="font-headline text-2xl font-extrabold mb-3">Project Practice!</h4>
+<div class="bg-surface-container-low rounded-lg p-3 mb-6">
+<p class="text-on-surface font-medium flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">rocket_launch</span>
+                        用文字做项目
+                    </p>
+</div>
+<p class="text-on-surface-variant text-sm mb-8 leading-relaxed">
+                    Time to build! Use prompts to create your own games, digital journals, and school presentations with AI help.
+                </p>
+<div class="flex items-center justify-between mt-auto">
+<span class="text-xs font-bold text-on-surface-variant">12 Lessons</span>
+<button class="p-3 bg-secondary text-on-secondary rounded-full group-hover:translate-x-2 transition-transform">
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Card 3: High Grade -->
+<div class="group bg-surface-container-lowest rounded-xl p-6 shadow-[0px_20px_40px_rgba(36,44,81,0.06)] hover:shadow-xl transition-all border border-transparent hover:border-tertiary/10">
+<div class="w-16 h-16 bg-tertiary-container/20 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-4xl text-tertiary" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
+</div>
+<span class="text-xs font-bold text-tertiary tracking-widest uppercase mb-2 block">High Grade (5-6 Year)</span>
+<h4 class="font-headline text-2xl font-extrabold mb-3">Prompt Engineering!</h4>
+<div class="bg-surface-container-low rounded-lg p-3 mb-6">
+<p class="text-on-surface font-medium flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">terminal</span>
+                        提示词工程进阶
+                    </p>
+</div>
+<p class="text-on-surface-variant text-sm mb-8 leading-relaxed">
+                    Master the logic behind the curtain. Learn complex prompt structures and how to fine-tune AI for professional results.
+                </p>
+<div class="flex items-center justify-between mt-auto">
+<span class="text-xs font-bold text-on-surface-variant">15 Lessons</span>
+<button class="p-3 bg-tertiary text-white rounded-full group-hover:translate-x-2 transition-transform">
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-[0px_-10px_40px_rgba(36,44,81,0.06)] rounded-t-[3rem]">
+<a class="flex flex-col items-center justify-center bg-[#6d9fff] text-white rounded-[2rem] px-6 py-2 shadow-inner transition-all translate-y-[-2px]" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-['Lexend'] text-xs font-medium">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#242c51] dark:text-slate-300 opacity-60 hover:opacity-100 transition-opacity" href="#">
+<span class="material-symbols-outlined">extension</span>
+<span class="font-['Lexend'] text-xs font-medium">Challenges</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#242c51] dark:text-slate-300 opacity-60 hover:opacity-100 transition-opacity" href="#">
+<span class="material-symbols-outlined">palette</span>
+<span class="font-['Lexend'] text-xs font-medium">Studio</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#242c51] dark:text-slate-300 opacity-60 hover:opacity-100 transition-opacity" href="#">
+<span class="material-symbols-outlined">face</span>
+<span class="font-['Lexend'] text-xs font-medium">Profile</span>
+</a>
+</nav>
+</body></html>

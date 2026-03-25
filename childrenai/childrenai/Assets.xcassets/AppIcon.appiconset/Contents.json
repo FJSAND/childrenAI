@@ -1,0 +1,38 @@
+{
+  "images" : [
+    {
+      "filename" : "jimeng-2026-03-25-3710-帮我创造一个logo，APP内容是少儿编程教学，蓝色调为主，logo上不要有任何....png",
+      "idiom" : "universal",
+      "platform" : "ios",
+      "size" : "1024x1024"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "jimeng-2026-03-25-3710-帮我创造一个logo，APP内容是少儿编程教学，蓝色调为主，logo上不要有任何... 1.png",
+      "idiom" : "universal",
+      "platform" : "ios",
+      "size" : "1024x1024"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "tinted"
+        }
+      ],
+      "filename" : "jimeng-2026-03-25-3710-帮我创造一个logo，APP内容是少儿编程教学，蓝色调为主，logo上不要有任何... 2.png",
+      "idiom" : "universal",
+      "platform" : "ios",
+      "size" : "1024x1024"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

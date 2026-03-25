@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Lexend:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "on-tertiary-fixed": "#134a00",
+              "tertiary-fixed": "#84fe58",
+              "primary-fixed-dim": "#5291ff",
+              "surface": "#f7f5ff",
+              "on-surface-variant": "#515981",
+              "on-secondary-fixed": "#453100",
+              "surface-variant": "#d5dbff",
+              "surface-container-low": "#efefff",
+              "inverse-primary": "#4c8eff",
+              "primary-container": "#6d9fff",
+              "surface-container-high": "#dde1ff",
+              "outline-variant": "#a3abd7",
+              "secondary-fixed": "#ffca57",
+              "surface-container-highest": "#d5dbff",
+              "on-background": "#242c51",
+              "tertiary": "#1e6a00",
+              "on-error": "#ffefee",
+              "on-primary-fixed": "#000000",
+              "surface-dim": "#cad2ff",
+              "inverse-on-surface": "#929bc6",
+              "surface-container-lowest": "#ffffff",
+              "primary-dim": "#004ca5",
+              "tertiary-fixed-dim": "#77ef4b",
+              "outline": "#6c759e",
+              "on-tertiary-container": "#1a5f00",
+              "error-dim": "#9f0519",
+              "on-tertiary-fixed-variant": "#1e6a00",
+              "secondary": "#765600",
+              "primary-fixed": "#6d9fff",
+              "on-secondary-fixed-variant": "#694c00",
+              "on-error-container": "#570008",
+              "secondary-dim": "#674b00",
+              "on-primary-container": "#00214f",
+              "on-primary": "#f0f2ff",
+              "surface-tint": "#0058bc",
+              "surface-bright": "#f7f5ff",
+              "on-surface": "#242c51",
+              "tertiary-container": "#84fe58",
+              "tertiary-dim": "#1a5c00",
+              "surface-container": "#e4e7ff",
+              "on-primary-fixed-variant": "#002a61",
+              "error-container": "#fb5151",
+              "on-secondary-container": "#5d4300",
+              "inverse-surface": "#020a2f",
+              "secondary-container": "#ffca57",
+              "background": "#f7f5ff",
+              "primary": "#0058bc",
+              "on-tertiary": "#d4ffbd",
+              "secondary-fixed-dim": "#f9b900",
+              "error": "#b31b25",
+              "on-secondary": "#fff1dc"
+            },
+            fontFamily: {
+              "headline": ["Plus Jakarta Sans"],
+              "body": ["Lexend"],
+              "label": ["Lexend"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .glass-card {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-body text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-6 py-4 w-full bg-[#f7f5ff] dark:bg-slate-900 sticky top-0 z-40">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center overflow-hidden shadow-lg border-2 border-white">
+<img alt="Avatar" class="w-full h-full object-cover" data-alt="cute friendly robot avatar with blue accents and glowing eyes on a soft pastel background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNm7pjQ1wu4gFePUGVBcP1-nA0Q9QyevFQ2SSznVW1LhGfm6_X7cfQD1K47j3jwSCFm9lCo0NRszmedtYOg76cAle_1TUDrWvELqIigFyFJKJtey4Y9-D3UEDufwAFNRjhoSV3w16rNFBaBH0GiuRF3COBt64xvQ4UIPaNjDhwgbCtg2fiRGtdJI1mnaSUtvZpk5S3LsH2QVDAGEoqmhmHwGophWMTRHTBwoqMNn4UEE5Xsovrx8Ut-AKSoGi94PMlE_OEAAicD0o"/>
+</div>
+<div>
+<h1 class="font-headline text-2xl font-bold tracking-tight text-[#0058bc] dark:text-[#6d9fff]">Hi, Little Explorer!</h1>
+<p class="text-xs font-medium text-on-surface-variant">Level 4 Master Coder</p>
+</div>
+</div>
+<div class="flex items-center bg-surface-container-lowest px-4 py-2 rounded-full shadow-sm hover:scale-105 transition-transform cursor-pointer">
+<span class="material-symbols-outlined text-secondary mr-2" style="font-variation-settings: 'FILL' 1;">stars</span>
+<span class="font-headline font-bold text-[#0058bc]">120 Points</span>
+</div>
+</header>
+<main class="px-6 py-8 max-w-4xl mx-auto">
+<!-- Hero Section -->
+<section class="mb-12 relative overflow-hidden rounded-xl bg-primary-container p-8 flex flex-col md:flex-row items-center gap-8">
+<div class="relative z-10 flex-1">
+<span class="bg-white/30 text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-4 inline-block">Current Path</span>
+<h2 class="font-headline text-4xl font-extrabold text-white leading-tight mb-4">Middle Grade <br/>Coding Journey</h2>
+<p class="text-on-primary-container text-lg max-w-md opacity-90">Start your adventure with text-based coding and build your own digital world! (Ages 3-4 Master Path)</p>
+</div>
+<div class="relative z-10 w-48 h-48 md:w-64 md:h-64 flex items-center justify-center">
+<div class="absolute inset-0 bg-white/20 rounded-full animate-pulse"></div>
+<img alt="Hero Art" class="w-40 h-40 md:w-52 md:h-52 object-contain" data-alt="abstract playful 3D shapes and floating code symbols in a vibrant blue and yellow color palette" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzba1lB1IUTNuIrZqC5va4oIVpnXwvNsvaeTGCT9rbJkS3Xsh80ocYNRYT6jmeQFHljn3axryVI4s4VPcyMrFhvge5T56xKMqvcvt4iX8PBnk5S4bWYHICCSre-5ueBents4-pJJWGuuqxXz2h9zydp20Dxrb5zrtp5Cfad-SgxmHMrZEGdg0YzVGjdXVUkF2n_miq0QwKE7IiMDY-uQjDFB1V-tYOVgAR6y3UxQAhKGBZch2_QX-DywfGHFB3_pDEIPFYO4o1E1M"/>
+</div>
+<!-- Decorative Orbs -->
+<div class="absolute -top-12 -right-12 w-48 h-48 bg-secondary-container rounded-full opacity-20"></div>
+<div class="absolute -bottom-12 -left-12 w-32 h-32 bg-tertiary-container rounded-full opacity-20"></div>
+</section>
+<!-- Lesson List -->
+<div class="space-y-6">
+<h3 class="font-headline text-xl font-bold text-on-surface flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary">school</span>
+                Course Curriculum
+            </h3>
+<!-- Lesson 1: Completed -->
+<div class="group relative bg-surface-container-lowest rounded-xl p-6 transition-all duration-300 hover:scale-[1.02] shadow-[0px_20px_40px_rgba(36,44,81,0.04)] border border-transparent hover:border-primary/10">
+<div class="flex items-center gap-6">
+<div class="w-16 h-16 rounded-lg bg-tertiary-container flex items-center justify-center text-on-tertiary-container">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">terminal</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between mb-1">
+<span class="text-xs font-bold uppercase tracking-wider text-tertiary">Lesson 1</span>
+<span class="flex items-center gap-1 text-xs font-bold text-tertiary bg-tertiary-container/30 px-3 py-1 rounded-full">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                Completed
+                            </span>
+</div>
+<h4 class="font-headline text-xl font-bold text-on-surface">What is Text Programming?</h4>
+</div>
+<div class="hidden md:block">
+<span class="material-symbols-outlined text-outline-variant">chevron_right</span>
+</div>
+</div>
+</div>
+<!-- Lesson 2: In Progress -->
+<div class="group relative bg-surface-container-lowest rounded-xl p-6 transition-all duration-300 hover:scale-[1.02] shadow-[0px_20px_40px_rgba(36,44,81,0.06)] border-2 border-primary/20">
+<div class="flex items-center gap-6">
+<div class="w-16 h-16 rounded-lg bg-primary-container flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">movie_filter</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between mb-1">
+<span class="text-xs font-bold uppercase tracking-wider text-primary">Lesson 2</span>
+<span class="flex items-center gap-1 text-xs font-bold text-primary bg-primary-container/20 px-3 py-1 rounded-full">
+<span class="material-symbols-outlined text-sm animate-spin">refresh</span>
+                                In Progress
+                            </span>
+</div>
+<h4 class="font-headline text-xl font-bold text-on-surface">First Animation (Hello Animation)</h4>
+</div>
+<div class="hidden md:block">
+<button class="bg-primary text-white px-6 py-2 rounded-full font-bold text-sm shadow-lg hover:shadow-primary/30 transition-shadow">Continue</button>
+</div>
+</div>
+</div>
+<!-- Lesson 3: Locked -->
+<div class="group relative bg-surface-container-low opacity-70 grayscale-[0.5] rounded-xl p-6 transition-all duration-300">
+<div class="flex items-center gap-6">
+<div class="w-16 h-16 rounded-lg bg-surface-container-highest flex items-center justify-center text-outline">
+<span class="material-symbols-outlined text-3xl">bolt</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between mb-1">
+<span class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Lesson 3</span>
+<span class="flex items-center gap-1 text-xs font-bold text-on-surface-variant bg-surface-variant px-3 py-1 rounded-full">
+<span class="material-symbols-outlined text-sm">lock</span>
+                                Locked
+                            </span>
+</div>
+<h4 class="font-headline text-xl font-bold text-on-surface opacity-50">Optimize Instructions</h4>
+</div>
+</div>
+</div>
+<!-- Lesson 4: Locked -->
+<div class="group relative bg-surface-container-low opacity-70 grayscale-[0.5] rounded-xl p-6 transition-all duration-300">
+<div class="flex items-center gap-6">
+<div class="w-16 h-16 rounded-lg bg-surface-container-highest flex items-center justify-center text-outline">
+<span class="material-symbols-outlined text-3xl">videogame_asset</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between mb-1">
+<span class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Lesson 4</span>
+<span class="flex items-center gap-1 text-xs font-bold text-on-surface-variant bg-surface-variant px-3 py-1 rounded-full">
+<span class="material-symbols-outlined text-sm">lock</span>
+                                Locked
+                            </span>
+</div>
+<h4 class="font-headline text-xl font-bold text-on-surface opacity-50">Math Game</h4>
+</div>
+</div>
+</div>
+<!-- Lesson 5: Locked -->
+<div class="group relative bg-surface-container-low opacity-70 grayscale-[0.5] rounded-xl p-6 transition-all duration-300">
+<div class="flex items-center gap-6">
+<div class="w-16 h-16 rounded-lg bg-surface-container-highest flex items-center justify-center text-outline">
+<span class="material-symbols-outlined text-3xl">auto_stories</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between mb-1">
+<span class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Lesson 5</span>
+<span class="flex items-center gap-1 text-xs font-bold text-on-surface-variant bg-surface-variant px-3 py-1 rounded-full">
+<span class="material-symbols-outlined text-sm">lock</span>
+                                Locked
+                            </span>
+</div>
+<h4 class="font-headline text-xl font-bold text-on-surface opacity-50">Story Animation</h4>
+</div>
+</div>
+</div>
+</div>
+<!-- Progress Bento Card -->
+<section class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="bg-secondary-container/30 p-8 rounded-xl border-2 border-secondary-container/20">
+<h4 class="font-headline text-lg font-bold text-on-secondary-container mb-2">Weekly Goal</h4>
+<div class="flex items-end justify-between mb-4">
+<span class="text-4xl font-black text-secondary">2/5</span>
+<span class="text-sm font-bold text-secondary-dim uppercase tracking-tighter">Lessons Done</span>
+</div>
+<div class="w-full bg-white/50 rounded-full h-3">
+<div class="bg-secondary h-full rounded-full" style="width: 40%"></div>
+</div>
+</div>
+<div class="bg-tertiary-container/20 p-8 rounded-xl border-2 border-tertiary-container/20 relative overflow-hidden group">
+<h4 class="font-headline text-lg font-bold text-on-tertiary-container mb-2">Next Milestone</h4>
+<p class="text-on-tertiary-container opacity-80 mb-4 font-medium">Complete "First Animation" to unlock the Creator Studio!</p>
+<div class="flex gap-2">
+<span class="w-8 h-8 rounded-full bg-white/40 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-sm">workspace_premium</span>
+</span>
+<span class="w-8 h-8 rounded-full bg-white/40 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-sm">palette</span>
+</span>
+</div>
+<span class="material-symbols-outlined absolute -bottom-4 -right-4 text-9xl text-tertiary opacity-5 group-hover:scale-110 transition-transform">celebration</span>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-[0px_-10px_40px_rgba(36,44,81,0.06)] rounded-t-[3rem]">
+<div class="flex flex-col items-center justify-center text-[#242c51] dark:text-slate-300 opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
+<span class="material-symbols-outlined">home</span>
+<span class="font-['Lexend'] text-xs font-medium">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-[#6d9fff] text-white rounded-[2rem] px-6 py-2 shadow-inner transition-all active:translate-y-[-2px]">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">extension</span>
+<span class="font-['Lexend'] text-xs font-medium">Challenges</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#242c51] dark:text-slate-300 opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
+<span class="material-symbols-outlined">palette</span>
+<span class="font-['Lexend'] text-xs font-medium">Studio</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#242c51] dark:text-slate-300 opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
+<span class="material-symbols-outlined">face</span>
+<span class="font-['Lexend'] text-xs font-medium">Profile</span>
+</div>
+</nav>
+</body></html>
