@@ -6,6 +6,11 @@ struct ContentView: View {
     @State private var dialogScale: CGFloat = 0.6
     @State private var dialogOpacity: Double = 0
 
+    // Welcome dialog
+    @State private var showWelcomeDialog = false
+    @State private var welcomeScale: CGFloat = 0.6
+    @State private var welcomeOpacity: Double = 0
+
     var body: some View {
         ZStack {
             TabView(selection: $appState.selectedTab) {
@@ -69,6 +74,19 @@ struct ContentView: View {
             if appState.showApiKeySheet {
                 globalApiKeyDialog
                     .zIndex(998)
+            }
+
+            // Welcome dialog (first launch)
+            if showWelcomeDialog {
+                welcomeDialogOverlay
+                    .zIndex(997)
+            }
+        }
+        .onAppear {
+            let hasLaunched = UserDefaults.standard.bool(forKey: "hasLaunchedBefore")
+            if !hasLaunched {
+                showWelcomeDialog = true
+                UserDefaults.standard.set(true, forKey: "hasLaunchedBefore")
             }
         }
     }
@@ -189,6 +207,72 @@ struct ContentView: View {
             appState.showApiKeySheet = false
         }
     }
+
+    // MARK: - Welcome Dialog (First Launch)
+    private var welcomeDialogOverlay: some View {
+        ZStack {
+            Color.black.opacity(0.35)
+                .ignoresSafeArea()
+
+            VStack(spacing: 0) {
+                VStack(spacing: DS.Spacing.sm) {
+                    ZStack {
+                        Circle()
+                            .fill(DS.Colors.primaryContainer.opacity(0.3))
+                            .frame(width: 64, height: 64)
+                        Text("👋")
+                            .font(.system(size: 32))
+                    }
+
+                    Text("欢迎来到萌码")
+                        .font(.system(size: 22, weight: .bold))
+                        .foregroundColor(DS.Colors.onBackground)
+
+                    Text("萌码是一款专为少儿打造的 AI 启蒙应用。\n在这里，孩子可以与 AI 自由对话、探索 AI 的奇妙能力，在趣味互动中轻松学会用文字指令进行创作。\n\n完全免费，放心使用 🎉")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundColor(DS.Colors.onSurfaceVariant)
+                        .multilineTextAlignment(.center)
+                        .lineSpacing(4)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .padding(.top, DS.Spacing.lg + 4)
+                .padding(.horizontal, DS.Spacing.lg)
+
+                Button { dismissWelcomeDialog() } label: {
+                    Text("开始探索")
+                        .font(.system(size: 15, weight: .bold))
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                        .background(DS.Colors.primary)
+                        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm))
+                }
+                .padding(DS.Spacing.lg)
+            }
+            .background(DS.Colors.surfaceContainerLowest)
+            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
+            .shadow(color: DS.Colors.onBackground.opacity(0.15), radius: 30, y: 15)
+            .padding(.horizontal, 36)
+            .scaleEffect(welcomeScale)
+            .opacity(welcomeOpacity)
+        }
+        .onAppear {
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.75)) {
+                welcomeScale = 1.0
+                welcomeOpacity = 1.0
+            }
+        }
+    }
+
+    private func dismissWelcomeDialog() {
+        withAnimation(.easeOut(duration: 0.2)) {
+            welcomeScale = 0.6
+            welcomeOpacity = 0
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            showWelcomeDialog = false
+        }
+    }
 }
 
 // MARK: - Settings View
@@ -236,8 +320,8 @@ struct SettingsView: View {
                 VStack(alignment: .leading, spacing: DS.Spacing.md) {
                     Label("关于", systemImage: "info.circle.fill")
                         .font(.headline).foregroundColor(DS.Colors.primary)
-                    HStack { Text("版本"); Spacer(); Text("1.0.0").foregroundColor(DS.Colors.onSurfaceVariant) }
-                    HStack { Text("作者"); Spacer(); Text("大朗拿度").foregroundColor(DS.Colors.onSurfaceVariant) }
+                    HStack { Text("版本").foregroundColor(DS.Colors.onSurface); Spacer(); Text("1.0.0").foregroundColor(DS.Colors.onSurfaceVariant) }
+                    HStack { Text("作者").foregroundColor(DS.Colors.onSurface); Spacer(); Text("大朗拿度").foregroundColor(DS.Colors.onSurfaceVariant) }
                 }
                 .padding(DS.Spacing.lg)
                 .background(DS.Colors.surfaceContainerLowest)

@@ -82,6 +82,7 @@ struct ChatView: View {
             TextField("告诉我你的奇思妙想...", text: $inputText, axis: .vertical)
                 .textFieldStyle(.plain)
                 .font(.system(size: 16))
+                .foregroundColor(DS.Colors.onSurface)
                 .lineLimit(1...4)
                 .focused($isInputFocused)
 

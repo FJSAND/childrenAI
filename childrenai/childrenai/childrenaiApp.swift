@@ -15,6 +15,7 @@ struct childrenaiApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(appState)
+                .preferredColorScheme(.light)
         }
     }
 }

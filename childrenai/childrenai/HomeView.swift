@@ -185,6 +185,7 @@ struct HomeView: View {
                 VStack(alignment: .leading, spacing: 2) {
                     Text("我已精通")
                         .font(.system(size: 20, weight: .bold))
+                        .foregroundColor(DS.Colors.onSurface)
                     Text("我已达到了「\(masteryTitle)」")
                         .font(.system(size: 13, weight: .medium))
                         .foregroundColor(DS.Colors.onSurfaceVariant)
@@ -292,6 +293,7 @@ struct HomeView: View {
                     .foregroundColor(DS.Colors.primary)
                 Text("选择你的等级")
                     .font(.system(size: 22, weight: .bold))
+                    .foregroundColor(DS.Colors.onSurface)
             }
 
             ForEach(Level.allCases) { level in

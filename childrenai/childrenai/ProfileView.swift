@@ -3,9 +3,12 @@ import SwiftUI
 struct ProfileView: View {
     @EnvironmentObject var appState: AppState
     @State private var showApiKeyDialog = false
+    @State private var showAboutDialog = false
     @State private var apiKeyInput = ""
     @State private var dialogScale: CGFloat = 0.6
     @State private var dialogOpacity: Double = 0
+    @State private var aboutDialogScale: CGFloat = 0.6
+    @State private var aboutDialogOpacity: Double = 0
 
     var body: some View {
         ZStack {
@@ -24,6 +27,11 @@ struct ProfileView: View {
             // MARK: - Custom API Key Dialog
             if showApiKeyDialog {
                 apiKeyDialogOverlay
+            }
+
+            // MARK: - About Dialog
+            if showAboutDialog {
+                aboutDialogOverlay
             }
         }
     }
@@ -147,6 +155,101 @@ struct ProfileView: View {
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             showApiKeyDialog = false
+        }
+    }
+
+    // MARK: - About Dialog Overlay
+    private var aboutDialogOverlay: some View {
+        ZStack {
+            Color.black.opacity(0.35)
+                .ignoresSafeArea()
+                .onTapGesture { dismissAboutDialog() }
+
+            VStack(spacing: 0) {
+                // Header icon
+                VStack(spacing: DS.Spacing.sm) {
+                    ZStack {
+                        Circle()
+                            .fill(DS.Colors.primaryContainer.opacity(0.3))
+                            .frame(width: 56, height: 56)
+                        Image(systemName: "sparkles")
+                            .font(.system(size: 24))
+                            .foregroundColor(DS.Colors.primary)
+                    }
+
+                    Text("萌码")
+                        .font(.system(size: 22, weight: .bold))
+                        .foregroundColor(DS.Colors.onBackground)
+
+                    Text("少儿 AI 编程启蒙")
+                        .font(.system(size: 14))
+                        .foregroundColor(DS.Colors.onSurfaceVariant)
+                }
+                .padding(.top, DS.Spacing.lg)
+                .padding(.horizontal, DS.Spacing.lg)
+
+                // Info rows
+                VStack(spacing: 0) {
+                    aboutInfoRow(label: "版本", value: "1.0.0")
+                    Divider().padding(.leading, 20)
+                    aboutInfoRow(label: "作者", value: "大朗拿度")
+                }
+                .padding(.top, DS.Spacing.lg)
+
+                // Close button
+                Button { dismissAboutDialog() } label: {
+                    Text("好的")
+                        .font(.system(size: 15, weight: .bold))
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 14)
+                        .background(DS.Colors.primary)
+                        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm))
+                }
+                .padding(DS.Spacing.lg)
+            }
+            .background(DS.Colors.surfaceContainerLowest)
+            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
+            .shadow(color: DS.Colors.onBackground.opacity(0.15), radius: 30, y: 15)
+            .padding(.horizontal, 36)
+            .scaleEffect(aboutDialogScale)
+            .opacity(aboutDialogOpacity)
+        }
+        .onAppear {
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.75)) {
+                aboutDialogScale = 1.0
+                aboutDialogOpacity = 1.0
+            }
+        }
+    }
+
+    private func aboutInfoRow(label: String, value: String) -> some View {
+        HStack {
+            Text(label)
+                .font(.system(size: 15, weight: .medium))
+                .foregroundColor(DS.Colors.onSurface)
+            Spacer()
+            Text(value)
+                .font(.system(size: 15))
+                .foregroundColor(DS.Colors.onSurfaceVariant)
+        }
+        .padding(.horizontal, 20)
+        .padding(.vertical, 14)
+    }
+
+    private func showAboutDialogAction() {
+        aboutDialogScale = 0.6
+        aboutDialogOpacity = 0
+        showAboutDialog = true
+    }
+
+    private func dismissAboutDialog() {
+        withAnimation(.easeOut(duration: 0.2)) {
+            aboutDialogScale = 0.6
+            aboutDialogOpacity = 0
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            showAboutDialog = false
         }
     }
 }
@@ -323,7 +426,13 @@ extension ProfileView {
 
                 dividerLine
 
-                settingsRowContent(icon: "questionmark.circle", title: "帮助中心")
+                Button {
+                    showAboutDialogAction()
+                } label: {
+                    settingsRowContent(icon: "info.circle", title: "关于")
+                }
+                .buttonStyle(.plain)
+
                 dividerLine
                 settingsRowContent(icon: "shield.fill", title: "隐私政策")
                     .onTapGesture {

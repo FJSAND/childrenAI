@@ -138,6 +138,7 @@ struct CourseListView: View {
                     .foregroundColor(DS.Colors.primary)
                 Text("课程大纲")
                     .font(.system(size: 19, weight: .bold))
+                    .foregroundColor(DS.Colors.onSurface)
             }
             .padding(.horizontal, DS.Spacing.lg)
 
