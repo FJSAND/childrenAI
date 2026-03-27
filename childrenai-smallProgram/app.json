@@ -1,0 +1,18 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/lesson/lesson",
+    "pages/chat/chat",
+    "pages/preview/preview"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#FF6B6B",
+    "navigationBarTitleText": "少儿AI编程",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#FFF5F0",
+    "backgroundTextStyle": "light"
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
+}
+

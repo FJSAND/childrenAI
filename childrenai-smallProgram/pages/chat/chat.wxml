@@ -1,0 +1,100 @@
+<view class="chat-container">
+  <!-- API Key 弹窗已改用 wx.showModal 原生输入框 -->
+
+  <!-- 顶部状态栏 -->
+  <view class="chat-header">
+    <view class="chat-title">
+      <text>💬 AI编程助教</text>
+      <view class="chat-status {{isThinking ? 'thinking' : ''}}">
+        {{isThinking ? '思考中' : '就绪'}}
+      </view>
+    </view>
+    <view class="chat-actions-top">
+      <view class="action-btn" bindtap="showApiConfig">⚙️</view>
+      <view class="action-btn" bindtap="clearChat">🗑️</view>
+    </view>
+  </view>
+
+  <!-- 当前课程提示 -->
+  <view class="course-hint" wx:if="{{currentLessonTitle}}">
+    📚 当前课程：{{currentLessonTitle}}
+  </view>
+
+  <!-- 消息列表 -->
+  <scroll-view
+    class="chat-messages"
+    scroll-y="true"
+    scroll-into-view="{{scrollToId}}"
+    scroll-with-animation="true"
+  >
+    <!-- 欢迎提示 -->
+    <view class="msg-system" wx:if="{{messages.length === 0}}">
+      <view class="hint-card">
+        <view class="hint-title">👋 你好！我是AI编程助教</view>
+        <view class="hint-text">在课程页点击「开始AI练习」，参考指令会自动填入</view>
+        <view class="hint-text">你也可以直接输入问题和我对话 💬</view>
+      </view>
+    </view>
+
+    <view
+      wx:for="{{messages}}"
+      wx:key="id"
+      id="msg-{{item.id}}"
+    >
+      <!-- 用户消息 -->
+      <view class="msg-bubble user" wx:if="{{item.role === 'user'}}">
+        <text class="msg-text" user-select="true">{{item.content}}</text>
+      </view>
+      <!-- AI消息：内容不为空时显示 -->
+      <view class="msg-bubble ai" wx:if="{{item.role === 'ai' && item.content}}">
+        <block wx:if="{{item.segments}}">
+          <block wx:for="{{item.segments}}" wx:for-item="seg" wx:key="index">
+            <text class="msg-text" user-select="true" wx:if="{{seg.type === 'text'}}">{{seg.content}}</text>
+            <view class="code-block" wx:if="{{seg.type === 'code'}}">
+              <view class="code-header">
+                <text class="code-lang">{{seg.lang}}</text>
+                <view class="code-actions">
+                  <view class="code-run-btn" bindtap="runCode" data-code="{{seg.content}}" wx:if="{{seg.lang === 'html'}}">▶ 运行</view>
+                  <view class="code-copy-btn" bindtap="copyCode" data-code="{{seg.content}}">📋 复制</view>
+                </view>
+              </view>
+              <scroll-view class="code-body" scroll-x="true" scroll-y="true">
+                <text class="code-text" user-select="true">{{seg.content}}</text>
+              </scroll-view>
+            </view>
+          </block>
+        </block>
+        <text class="msg-text" user-select="true" wx:if="{{!item.segments}}">{{item.content}}</text>
+      </view>
+      <view class="msg-system" wx:if="{{item.role === 'system'}}">
+        <text>{{item.content}}</text>
+      </view>
+    </view>
+
+    <!-- 思考中动画 -->
+    <view class="msg-bubble ai" wx:if="{{isThinking}}" id="msg-loading">
+      <text class="thinking-dots">AI正在思考...</text>
+    </view>
+
+    <view id="msg-bottom" style="height: 20rpx;"></view>
+  </scroll-view>
+
+  <!-- 输入区域 -->
+  <view class="input-area">
+    <textarea
+      class="chat-input"
+      placeholder="输入你的指令..."
+      value="{{inputText}}"
+      bindinput="onInput"
+      bindconfirm="sendMessage"
+      auto-height="true"
+      maxlength="2000"
+      confirm-type="send"
+    />
+    <view
+      class="send-btn {{isThinking || !inputText ? 'disabled' : ''}}"
+      bindtap="sendMessage"
+    >发送</view>
+  </view>
+</view>
+

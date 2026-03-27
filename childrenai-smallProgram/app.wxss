@@ -1,0 +1,80 @@
+/* ========================================
+   🎨 童趣积木风 — Mini Program Global
+   ======================================== */
+
+page {
+  --coral: #FF6B6B;
+  --coral-soft: #FFE0E0;
+  --sky: #4ECDC4;
+  --sky-soft: #D4F5F2;
+  --sun: #FFE66D;
+  --sun-soft: #FFF8D6;
+  --grape: #A78BFA;
+  --grape-soft: #EDE9FE;
+  --bubblegum: #F472B6;
+  --bubblegum-soft: #FCE7F3;
+  --ocean: #38BDF8;
+  --ocean-soft: #E0F2FE;
+
+  --bg-canvas: #FFF5F0;
+  --card-glass: rgba(255, 255, 255, 0.72);
+  --card-solid: #ffffff;
+  --border-soft: rgba(0, 0, 0, 0.06);
+
+  --ink: #2D2B42;
+  --ink-light: #7C7A92;
+  --ink-faint: #B0AECA;
+
+  --shadow-card: 0 8rpx 32rpx rgba(45, 43, 66, 0.08), 0 2rpx 8rpx rgba(45, 43, 66, 0.04);
+  --shadow-float: 0 12rpx 40rpx rgba(45, 43, 66, 0.12);
+
+  --r-sm: 24rpx;
+  --r-md: 36rpx;
+  --r-lg: 48rpx;
+  --r-pill: 100rpx;
+
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Noto Sans SC', sans-serif;
+  color: var(--ink);
+  background-color: var(--bg-canvas);
+  font-size: 28rpx;
+}
+
+/* 通用工具类 */
+.hidden { display: none !important; }
+
+.card {
+  background: var(--card-solid);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-card);
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+}
+
+.btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24rpx 56rpx;
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, var(--coral), #FF8E6B, var(--sun));
+  border-radius: var(--r-pill);
+  box-shadow: 0 8rpx 28rpx rgba(255, 107, 107, 0.3);
+  border: none;
+}
+
+.btn-primary::after { border: none; }
+
+.section-title {
+  font-size: 34rpx;
+  font-weight: 800;
+  color: var(--ink);
+  margin-bottom: 20rpx;
+}
+
+/* Badge 标签 */
+.badge-low { background: var(--bubblegum-soft); color: #BE185D; }
+.badge-mid { background: var(--ocean-soft); color: #0369A1; }
+.badge-high { background: var(--grape-soft); color: #6D28D9; }
+

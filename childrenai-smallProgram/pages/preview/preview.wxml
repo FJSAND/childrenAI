@@ -1,0 +1,20 @@
+<view class="preview-container">
+  <!-- 顶部工具栏 -->
+  <view class="preview-toolbar">
+    <view class="toolbar-title">▶ 代码运行结果</view>
+    <view class="toolbar-actions">
+      <view class="toolbar-btn" bindtap="copyCode">📋 复制代码</view>
+    </view>
+  </view>
+
+  <!-- 渲染预览区 -->
+  <scroll-view class="preview-render" scroll-y="true">
+    <rich-text nodes="{{htmlCode}}" class="rich-content"></rich-text>
+  </scroll-view>
+
+  <!-- 底部提示 -->
+  <view class="preview-tip">
+    💡 此为简化预览，完整效果（含动画/交互）请复制代码到浏览器运行
+  </view>
+</view>
+

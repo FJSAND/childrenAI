@@ -1,0 +1,58 @@
+<view class="container">
+  <!-- 欢迎区域 -->
+  <view class="welcome-section">
+    <view class="welcome-icon">🤖</view>
+    <view class="welcome-title">少儿AI编程课堂</view>
+    <view class="welcome-sub">用文字指令，开启编程之旅！</view>
+  </view>
+
+  <!-- 年级切换 -->
+  <view class="level-tabs">
+    <view
+      class="level-tab {{currentLevel === 'low' ? 'active-low' : ''}}"
+      data-level="low"
+      bindtap="switchLevel"
+    >🌱 低段</view>
+    <view
+      class="level-tab {{currentLevel === 'mid' ? 'active-mid' : ''}}"
+      data-level="mid"
+      bindtap="switchLevel"
+    >🌿 中段</view>
+    <view
+      class="level-tab {{currentLevel === 'high' ? 'active-high' : ''}}"
+      data-level="high"
+      bindtap="switchLevel"
+    >🌳 高段</view>
+  </view>
+
+  <!-- 当前年级信息 -->
+  <view class="course-info card">
+    <view class="course-name">{{courseData.name}}</view>
+    <view class="course-subtitle">{{courseData.subtitle}}</view>
+  </view>
+
+  <!-- 课程列表 -->
+  <view class="lesson-list">
+    <view
+      class="lesson-card"
+      wx:for="{{courseData.lessons}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      data-index="{{index}}"
+      bindtap="goToLesson"
+    >
+      <view class="lesson-num-circle">
+        <text class="lesson-num">{{index + 1}}</text>
+      </view>
+      <view class="lesson-info">
+        <text class="lesson-title">{{item.title}}</text>
+        <text class="lesson-goal">{{item.goal}}</text>
+      </view>
+      <view class="lesson-arrow">›</view>
+    </view>
+  </view>
+
+  <!-- 底部间距 -->
+  <view style="height: 40rpx;"></view>
+</view>
+

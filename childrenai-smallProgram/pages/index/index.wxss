@@ -1,0 +1,135 @@
+.container {
+  padding: 24rpx 32rpx;
+  padding-bottom: 40rpx;
+}
+
+/* 欢迎区域 */
+.welcome-section {
+  text-align: center;
+  padding: 48rpx 0 32rpx;
+}
+.welcome-icon {
+  font-size: 96rpx;
+  margin-bottom: 16rpx;
+}
+.welcome-title {
+  font-size: 44rpx;
+  font-weight: 900;
+  background: linear-gradient(135deg, #FF6B6B, #A78BFA, #4ECDC4);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+.welcome-sub {
+  font-size: 28rpx;
+  color: var(--ink-light);
+  margin-top: 8rpx;
+}
+
+/* 年级切换 */
+.level-tabs {
+  display: flex;
+  gap: 12rpx;
+  padding: 16rpx 0;
+  margin-bottom: 20rpx;
+}
+.level-tab {
+  flex: 1;
+  text-align: center;
+  padding: 20rpx 0;
+  font-size: 28rpx;
+  font-weight: 700;
+  border-radius: var(--r-sm);
+  background: var(--card-solid);
+  color: var(--ink-light);
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04);
+  transition: all 0.2s;
+}
+.level-tab.active-low {
+  background: var(--bubblegum-soft);
+  color: #BE185D;
+  box-shadow: 0 4rpx 16rpx rgba(244,114,182,0.2);
+}
+.level-tab.active-mid {
+  background: var(--ocean-soft);
+  color: #0369A1;
+  box-shadow: 0 4rpx 16rpx rgba(56,189,248,0.2);
+}
+.level-tab.active-high {
+  background: var(--grape-soft);
+  color: #6D28D9;
+  box-shadow: 0 4rpx 16rpx rgba(167,139,250,0.2);
+}
+
+/* 课程信息卡 */
+.course-info {
+  text-align: center;
+}
+.course-name {
+  font-size: 32rpx;
+  font-weight: 800;
+  color: var(--ink);
+}
+.course-subtitle {
+  font-size: 26rpx;
+  color: var(--ink-light);
+  margin-top: 8rpx;
+}
+
+/* 课程列表 */
+.lesson-list {
+  margin-top: 8rpx;
+}
+.lesson-card {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+  background: var(--card-solid);
+  border-radius: var(--r-md);
+  padding: 28rpx 24rpx;
+  margin-bottom: 16rpx;
+  box-shadow: var(--shadow-card);
+}
+.lesson-card:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+.lesson-num-circle {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  background: var(--coral-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.lesson-num {
+  font-size: 26rpx;
+  font-weight: 800;
+  color: var(--coral);
+}
+.lesson-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+}
+.lesson-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: var(--ink);
+}
+.lesson-goal {
+  font-size: 24rpx;
+  color: var(--ink-light);
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.lesson-arrow {
+  font-size: 36rpx;
+  color: var(--ink-faint);
+  flex-shrink: 0;
+}
+

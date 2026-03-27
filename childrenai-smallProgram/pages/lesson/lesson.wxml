@@ -1,0 +1,46 @@
+<view class="container" wx:if="{{lesson}}">
+  <!-- 课程标签 -->
+  <view class="lesson-badge {{badgeClass}}">{{courseName}}</view>
+
+  <!-- 课程标题 -->
+  <view class="lesson-title">{{lesson.title}}</view>
+
+  <!-- 学习目标 -->
+  <view class="section">
+    <view class="section-header">🎯 学习目标</view>
+    <view class="goal-card">{{lesson.goal}}</view>
+  </view>
+
+  <!-- 参考指令 -->
+  <view class="section">
+    <view class="section-header">💡 参考指令</view>
+    <view class="prompt-card">
+      <text class="prompt-text" selectable="true">{{lesson.prompt}}</text>
+      <view class="copy-btn" bindtap="copyPrompt">📋 复制</view>
+    </view>
+  </view>
+
+  <!-- 操作步骤 -->
+  <view class="section">
+    <view class="section-header">📝 操作步骤</view>
+    <view class="step-card" wx:for="{{lesson.steps}}" wx:key="index">
+      <view class="step-num">{{index + 1}}</view>
+      <text class="step-text">{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 自评清单 -->
+  <view class="section">
+    <view class="section-header">✅ 自评清单</view>
+    <view class="checklist-item" wx:for="{{lesson.checklist}}" wx:key="index">
+      <text class="check-icon">☐</text>
+      <text>{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 开始练习按钮 -->
+  <button class="btn-practice" bindtap="startPractice">🚀 开始AI练习</button>
+
+  <view style="height: 60rpx;"></view>
+</view>
+
