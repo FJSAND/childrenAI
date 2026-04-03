@@ -15,6 +15,12 @@ class AppState: ObservableObject {
 
     @Published var apiKey: String = ""
     @Published var showApiKeySheet: Bool = false
+
+    // AI 隐私同意
+    @Published var hasAgreedAIConsent: Bool = false
+    @Published var showAIConsentDialog: Bool = false
+    var pendingAIMessage: String? = nil
+    var pendingIsLesson: Bool = false
     @Published var selectedTab: Int = 0
     @Published var homePath = NavigationPath()
     @Published var achievementsPath = NavigationPath()
@@ -85,9 +91,29 @@ class AppState: ObservableObject {
         if let saved = UserDefaults.standard.string(forKey: "deepseek_api_key") {
             apiKey = saved
         }
+        hasAgreedAIConsent = UserDefaults.standard.bool(forKey: "hasAgreedAIConsent")
         loadSavedWorks()
         loadUserStats()
         checkLoginStreak()
+    }
+
+    func agreeAIConsent() {
+        hasAgreedAIConsent = true
+        UserDefaults.standard.set(true, forKey: "hasAgreedAIConsent")
+        // 发送之前暂存的消息
+        if let msg = pendingAIMessage {
+            pendingAIMessage = nil
+            if pendingIsLesson {
+                sendLessonMessage(msg)
+            } else {
+                sendMessage(msg)
+            }
+        }
+    }
+
+    func declineAIConsent() {
+        showAIConsentDialog = false
+        pendingAIMessage = nil
     }
 
     func saveApiKey(_ key: String) {
@@ -337,6 +363,12 @@ class AppState: ObservableObject {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
         if apiKey.isEmpty { showApiKeySheet = true; return }
+        if !hasAgreedAIConsent {
+            pendingAIMessage = trimmed
+            pendingIsLesson = false
+            showAIConsentDialog = true
+            return
+        }
         chatMessages.append(ChatMessage(role: .user, content: trimmed))
         chatHistory.append(["role": "user", "content": trimmed])
         recordMessageSent()
@@ -348,6 +380,12 @@ class AppState: ObservableObject {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
         if apiKey.isEmpty { showApiKeySheet = true; return }
+        if !hasAgreedAIConsent {
+            pendingAIMessage = trimmed
+            pendingIsLesson = true
+            showAIConsentDialog = true
+            return
+        }
         lessonMessages.append(ChatMessage(role: .user, content: trimmed))
         lessonChatHistory.append(["role": "user", "content": trimmed])
         recordMessageSent()

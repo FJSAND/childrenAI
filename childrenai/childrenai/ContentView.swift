@@ -11,6 +11,10 @@ struct ContentView: View {
     @State private var welcomeScale: CGFloat = 0.6
     @State private var welcomeOpacity: Double = 0
 
+    // AI consent dialog
+    @State private var consentScale: CGFloat = 0.6
+    @State private var consentOpacity: Double = 0
+
     var body: some View {
         ZStack {
             TabView(selection: $appState.selectedTab) {
@@ -80,6 +84,12 @@ struct ContentView: View {
             if showWelcomeDialog {
                 welcomeDialogOverlay
                     .zIndex(997)
+            }
+
+            // AI consent dialog
+            if appState.showAIConsentDialog {
+                aiConsentDialogOverlay
+                    .zIndex(996)
             }
         }
         .onAppear {
@@ -271,6 +281,93 @@ struct ContentView: View {
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             showWelcomeDialog = false
+        }
+    }
+
+    // MARK: - AI Consent Dialog
+    private var aiConsentDialogOverlay: some View {
+        ZStack {
+            Color.black.opacity(0.35)
+                .ignoresSafeArea()
+
+            VStack(spacing: 0) {
+                VStack(spacing: DS.Spacing.sm) {
+                    ZStack {
+                        Circle()
+                            .fill(DS.Colors.primaryContainer.opacity(0.3))
+                            .frame(width: 56, height: 56)
+                        Image(systemName: "hand.raised.fill")
+                            .font(.system(size: 24))
+                            .foregroundColor(DS.Colors.primary)
+                    }
+
+                    Text("AI 服务说明")
+                        .font(.system(size: 20, weight: .bold))
+                        .foregroundColor(DS.Colors.onBackground)
+
+                    Text("本应用将您输入的文字内容发送至第三方 AI 服务（DeepSeek）以生成回复。我们不会收集或发送您的个人身份信息。\n\n是否同意使用该服务？")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundColor(DS.Colors.onSurfaceVariant)
+                        .multilineTextAlignment(.center)
+                        .lineSpacing(4)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .padding(.top, DS.Spacing.lg)
+                .padding(.horizontal, DS.Spacing.lg)
+
+                HStack(spacing: DS.Spacing.md) {
+                    Button {
+                        dismissConsentDialog()
+                        appState.declineAIConsent()
+                    } label: {
+                        Text("不同意")
+                            .font(.system(size: 15, weight: .semibold))
+                            .foregroundColor(DS.Colors.onSurfaceVariant)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 14)
+                            .background(DS.Colors.surfaceContainerLow)
+                            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm))
+                    }
+
+                    Button {
+                        dismissConsentDialog()
+                        appState.agreeAIConsent()
+                    } label: {
+                        Text("同意")
+                            .font(.system(size: 15, weight: .bold))
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 14)
+                            .background(DS.Colors.primary)
+                            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm))
+                    }
+                }
+                .padding(DS.Spacing.lg)
+            }
+            .background(DS.Colors.surfaceContainerLowest)
+            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
+            .shadow(color: DS.Colors.onBackground.opacity(0.15), radius: 30, y: 15)
+            .padding(.horizontal, 36)
+            .scaleEffect(consentScale)
+            .opacity(consentOpacity)
+        }
+        .onAppear {
+            consentScale = 0.6
+            consentOpacity = 0
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.75)) {
+                consentScale = 1.0
+                consentOpacity = 1.0
+            }
+        }
+    }
+
+    private func dismissConsentDialog() {
+        withAnimation(.easeOut(duration: 0.2)) {
+            consentScale = 0.6
+            consentOpacity = 0
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            appState.showAIConsentDialog = false
         }
     }
 }
