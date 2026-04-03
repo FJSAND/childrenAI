@@ -21,17 +21,17 @@ struct CourseListView: View {
 
     private var levelTitle: String {
         switch appState.currentLevel {
-        case .low: return "低段\n编程之旅"
-        case .mid: return "中段\n编程之旅"
-        case .high: return "高段\n编程之旅"
+        case .low: return "初级\n编程之旅"
+        case .mid: return "中级\n编程之旅"
+        case .high: return "高级\n编程之旅"
         }
     }
 
     private var levelDesc: String {
         switch appState.currentLevel {
-        case .low: return "用简单文字和机器人对话！学习AI如何理解你的指令。(1-2年级启蒙篇)"
-        case .mid: return "开始你的文字编程冒险，创造属于自己的数字世界！(3-4年级实战篇)"
-        case .high: return "掌握提示词工程，成为AI项目设计师！(5-6年级进阶篇)"
+        case .low: return "用简单文字和机器人对话！学习AI如何理解你的指令。(启蒙篇)"
+        case .mid: return "开始你的文字编程冒险，创造属于自己的数字世界！(实战篇)"
+        case .high: return "掌握提示词工程，成为AI项目设计师！(进阶篇)"
         }
     }
 

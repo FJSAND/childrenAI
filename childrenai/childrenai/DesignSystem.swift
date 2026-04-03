@@ -13,13 +13,13 @@ struct DS {
         static let onPrimaryContainer = Color(hex: "00214f")
         static let primaryDim = Color(hex: "004ca5")
 
-        // Secondary (柔紫 — 中段)
+        // Secondary (柔紫 — 中级)
         static let secondary = Color(hex: "6B5EA8")
         static let secondaryContainer = Color(hex: "E8DEFF")
         static let onSecondary = Color(hex: "F5F0FF")
         static let onSecondaryContainer = Color(hex: "4A3D82")
 
-        // Tertiary (玫瑰 — 高段)
+        // Tertiary (玫瑰 — 高级)
         static let tertiary = Color(hex: "B85A7A")
         static let tertiaryContainer = Color(hex: "FFD8E8")
         static let onTertiary = Color(hex: "FFF0F5")

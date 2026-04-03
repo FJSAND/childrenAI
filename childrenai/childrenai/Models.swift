@@ -7,9 +7,9 @@ enum Level: String, CaseIterable, Identifiable {
 
     var name: String {
         switch self {
-        case .low: return "低段（1-2年级）"
-        case .mid: return "中段（3-4年级）"
-        case .high: return "高段（5-6年级）"
+        case .low: return "初级"
+        case .mid: return "中级"
+        case .high: return "高级"
         }
     }
     var subtitle: String {
@@ -81,7 +81,7 @@ enum BadgeConditionType: String, Codable {
     case completeFirstLesson  // 完成第一节课
     case firstCodeRun         // 第一次运行代码
     case saveWorks            // 保存指定数量作品
-    case completeLevelLow     // 完成低段全部课程
+    case completeLevelLow     // 完成初级全部课程
     case completeAllLessons   // 完成全部课程
     case totalMessages        // 发送消息总数
     case loginStreak          // 连续登录天数

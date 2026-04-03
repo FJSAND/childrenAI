@@ -55,7 +55,7 @@ class AppState: ObservableObject {
         BadgeDefinition(id: 4,  imageName: "medal_004", title: "循环大师",   description: "完成 10 节课程",       conditionType: .completeLessons,     threshold: 10),
         BadgeDefinition(id: 5,  imageName: "medal_005", title: "创意画家",   description: "保存 3 个作品",        conditionType: .saveWorks,           threshold: 3),
         BadgeDefinition(id: 6,  imageName: "medal_006", title: "动画达人",   description: "保存 5 个作品",        conditionType: .saveWorks,           threshold: 5),
-        BadgeDefinition(id: 7,  imageName: "medal_007", title: "探索先锋",   description: "完成低段全部课程",     conditionType: .completeLevelLow,    threshold: 1),
+        BadgeDefinition(id: 7,  imageName: "medal_007", title: "探索先锋",   description: "完成初级全部课程",     conditionType: .completeLevelLow,    threshold: 1),
         BadgeDefinition(id: 8,  imageName: "medal_008", title: "代码创造者", description: "保存 10 个作品",       conditionType: .saveWorks,           threshold: 10),
         BadgeDefinition(id: 9,  imageName: "medal_009", title: "编程大师",   description: "完成全部 45 节课程",   conditionType: .completeAllLessons,  threshold: 45),
         BadgeDefinition(id: 10, imageName: "medal_010", title: "团队之星",   description: "使用 200 积分兑换",    conditionType: .redeemPoints,        threshold: 200),
