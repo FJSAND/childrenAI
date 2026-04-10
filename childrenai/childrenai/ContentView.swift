@@ -14,6 +14,7 @@ struct ContentView: View {
     // AI consent dialog
     @State private var consentScale: CGFloat = 0.6
     @State private var consentOpacity: Double = 0
+    @State private var showPrivacyPolicy = false
 
     var body: some View {
         ZStack {
@@ -290,64 +291,91 @@ struct ContentView: View {
             Color.black.opacity(0.35)
                 .ignoresSafeArea()
 
-            VStack(spacing: 0) {
-                VStack(spacing: DS.Spacing.sm) {
-                    ZStack {
-                        Circle()
-                            .fill(DS.Colors.primaryContainer.opacity(0.3))
-                            .frame(width: 56, height: 56)
-                        Image(systemName: "hand.raised.fill")
-                            .font(.system(size: 24))
-                            .foregroundColor(DS.Colors.primary)
+            ScrollView {
+                VStack(spacing: 0) {
+                    VStack(spacing: DS.Spacing.sm) {
+                        ZStack {
+                            Circle()
+                                .fill(DS.Colors.primaryContainer.opacity(0.3))
+                                .frame(width: 56, height: 56)
+                            Image(systemName: "hand.raised.fill")
+                                .font(.system(size: 24))
+                                .foregroundColor(DS.Colors.primary)
+                        }
+
+                        Text("第三方 AI 服务数据授权")
+                            .font(.system(size: 20, weight: .bold))
+                            .foregroundColor(DS.Colors.onBackground)
                     }
+                    .padding(.top, DS.Spacing.lg)
+                    .padding(.horizontal, DS.Spacing.lg)
 
-                    Text("AI 服务说明")
-                        .font(.system(size: 20, weight: .bold))
-                        .foregroundColor(DS.Colors.onBackground)
+                    // Detailed disclosure
+                    VStack(alignment: .leading, spacing: 12) {
+                        consentInfoRow(icon: "doc.text", title: "发送的数据",
+                            detail: "您在对话中输入的文字消息将被发送至第三方服务以生成 AI 回复。我们不会发送您的姓名、手机号、位置或其他个人身份信息。")
 
-                    Text("本应用将您输入的文字内容发送至第三方 AI 服务（DeepSeek）以生成回复。我们不会收集或发送您的个人身份信息。\n\n是否同意使用该服务？")
-                        .font(.system(size: 14, weight: .medium))
-                        .foregroundColor(DS.Colors.onSurfaceVariant)
-                        .multilineTextAlignment(.center)
-                        .lineSpacing(4)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-                .padding(.top, DS.Spacing.lg)
-                .padding(.horizontal, DS.Spacing.lg)
+                        consentInfoRow(icon: "building.2", title: "数据接收方",
+                            detail: "您的对话内容将发送至 DeepSeek（深度求索，deepseek.com），由其 AI 模型处理并返回回复内容。")
 
-                HStack(spacing: DS.Spacing.md) {
+                        consentInfoRow(icon: "shield.checkered", title: "数据保护",
+                            detail: "数据通过 HTTPS 加密传输。DeepSeek 按其隐私政策处理数据，不会将您的对话内容用于向第三方营销。")
+
+                        consentInfoRow(icon: "xmark.circle", title: "拒绝的影响",
+                            detail: "如果您不同意，将无法使用 AI 对话功能，但仍可浏览课程内容。")
+                    }
+                    .padding(.horizontal, DS.Spacing.lg)
+                    .padding(.top, DS.Spacing.md)
+
+                    // Privacy policy link
                     Button {
-                        dismissConsentDialog()
-                        appState.declineAIConsent()
+                        showPrivacyPolicy = true
                     } label: {
-                        Text("不同意")
-                            .font(.system(size: 15, weight: .semibold))
-                            .foregroundColor(DS.Colors.onSurfaceVariant)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 14)
-                            .background(DS.Colors.surfaceContainerLow)
-                            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm))
+                        HStack(spacing: 4) {
+                            Image(systemName: "doc.text.magnifyingglass")
+                                .font(.system(size: 12))
+                            Text("查看完整隐私政策")
+                                .font(.system(size: 13, weight: .medium))
+                        }
+                        .foregroundColor(DS.Colors.primary)
                     }
+                    .padding(.top, DS.Spacing.sm)
 
-                    Button {
-                        dismissConsentDialog()
-                        appState.agreeAIConsent()
-                    } label: {
-                        Text("同意")
-                            .font(.system(size: 15, weight: .bold))
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 14)
-                            .background(DS.Colors.primary)
-                            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm))
+                    HStack(spacing: DS.Spacing.md) {
+                        Button {
+                            dismissConsentDialog()
+                            appState.declineAIConsent()
+                        } label: {
+                            Text("不同意")
+                                .font(.system(size: 15, weight: .semibold))
+                                .foregroundColor(DS.Colors.onSurfaceVariant)
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 14)
+                                .background(DS.Colors.surfaceContainerLow)
+                                .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm))
+                        }
+
+                        Button {
+                            dismissConsentDialog()
+                            appState.agreeAIConsent()
+                        } label: {
+                            Text("同意并继续")
+                                .font(.system(size: 15, weight: .bold))
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 14)
+                                .background(DS.Colors.primary)
+                                .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm))
+                        }
                     }
+                    .padding(DS.Spacing.lg)
                 }
-                .padding(DS.Spacing.lg)
+                .background(DS.Colors.surfaceContainerLowest)
+                .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
+                .shadow(color: DS.Colors.onBackground.opacity(0.15), radius: 30, y: 15)
+                .padding(.horizontal, 28)
+                .padding(.vertical, 60)
             }
-            .background(DS.Colors.surfaceContainerLowest)
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
-            .shadow(color: DS.Colors.onBackground.opacity(0.15), radius: 30, y: 15)
-            .padding(.horizontal, 36)
             .scaleEffect(consentScale)
             .opacity(consentOpacity)
         }
@@ -357,6 +385,30 @@ struct ContentView: View {
             withAnimation(.spring(response: 0.4, dampingFraction: 0.75)) {
                 consentScale = 1.0
                 consentOpacity = 1.0
+            }
+        }
+        .sheet(isPresented: $showPrivacyPolicy) {
+            PrivacyPolicyView()
+        }
+    }
+
+    private func consentInfoRow(icon: String, title: String, detail: String) -> some View {
+        HStack(alignment: .top, spacing: 12) {
+            Image(systemName: icon)
+                .font(.system(size: 16))
+                .foregroundColor(DS.Colors.primary)
+                .frame(width: 24, height: 24)
+                .padding(.top, 2)
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                    .font(.system(size: 14, weight: .bold))
+                    .foregroundColor(DS.Colors.onSurface)
+                Text(detail)
+                    .font(.system(size: 13))
+                    .foregroundColor(DS.Colors.onSurfaceVariant)
+                    .lineSpacing(3)
+                    .fixedSize(horizontal: false, vertical: true)
             }
         }
     }

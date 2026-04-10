@@ -9,6 +9,7 @@ struct ProfileView: View {
     @State private var dialogOpacity: Double = 0
     @State private var aboutDialogScale: CGFloat = 0.6
     @State private var aboutDialogOpacity: Double = 0
+    @State private var showPrivacyPolicy = false
 
     var body: some View {
         ZStack {
@@ -434,16 +435,31 @@ extension ProfileView {
                 .buttonStyle(.plain)
 
                 dividerLine
-                settingsRowContent(icon: "shield.fill", title: "隐私政策")
-                    .onTapGesture {
-                        if let url = URL(string: "https://www.lynto.com.cn/privacy.html") {
-                            UIApplication.shared.open(url)
-                        }
-                    }
+                Button {
+                    showPrivacyPolicy = true
+                } label: {
+                    settingsRowContent(icon: "shield.fill", title: "隐私政策")
+                }
+                .buttonStyle(.plain)
+
+                dividerLine
+                Button {
+                    // 撤销 AI 同意
+                    appState.hasAgreedAIConsent = false
+                    UserDefaults.standard.set(false, forKey: "hasAgreedAIConsent")
+                } label: {
+                    settingsRowContent(icon: "arrow.uturn.backward.circle", title: "撤销 AI 数据授权")
+                }
+                .buttonStyle(.plain)
+                .opacity(appState.hasAgreedAIConsent ? 1 : 0.4)
+                .disabled(!appState.hasAgreedAIConsent)
             }
             .background(DS.Colors.surfaceContainerLow)
             .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
             .padding(.horizontal, DS.Spacing.lg)
+            .sheet(isPresented: $showPrivacyPolicy) {
+                PrivacyPolicyView()
+            }
         }
     }
 
