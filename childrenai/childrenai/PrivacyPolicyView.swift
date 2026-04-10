@@ -13,7 +13,7 @@ struct PrivacyPolicyView: View {
                             .font(.system(size: 13))
                             .foregroundColor(DS.Colors.onSurfaceVariant)
 
-                        bodyText("「萌码」（以下简称"本应用"）由开发者运营，致力于为少儿提供 AI 编程启蒙教育服务。我们非常重视用户隐私保护。本隐私政策旨在向您说明本应用如何收集、使用、存储和共享您的信息。")
+                        bodyText("「萌码」（以下简称\"本应用\"）由开发者运营，致力于为少儿提供 AI 编程启蒙教育服务。我们非常重视用户隐私保护。本隐私政策旨在向您说明本应用如何收集、使用、存储和共享您的信息。")
                     }
 
                     Group {
@@ -60,7 +60,7 @@ struct PrivacyPolicyView: View {
 
                     Group {
                         sectionTitle("八、联系我们")
-                        bodyText("如您对本隐私政策有任何疑问，请通过以下方式联系我们：\n\n邮箱：fjsand@foxmail.com")
+                        bodyText("如您对本隐私政策有任何疑问，请通过以下方式联系我们：\n\n邮箱：fjsand@outlook.com")
                     }
                 }
                 .padding(DS.Spacing.lg)

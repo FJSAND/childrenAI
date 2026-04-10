@@ -169,14 +169,11 @@ struct ProfileView: View {
             VStack(spacing: 0) {
                 // Header icon
                 VStack(spacing: DS.Spacing.sm) {
-                    ZStack {
-                        Circle()
-                            .fill(DS.Colors.primaryContainer.opacity(0.3))
-                            .frame(width: 56, height: 56)
-                        Image(systemName: "sparkles")
-                            .font(.system(size: 24))
-                            .foregroundColor(DS.Colors.primary)
-                    }
+                    Image("app_logo")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 72, height: 72)
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
 
                     Text("萌码")
                         .font(.system(size: 22, weight: .bold))
@@ -442,17 +439,7 @@ extension ProfileView {
                 }
                 .buttonStyle(.plain)
 
-                dividerLine
-                Button {
-                    // 撤销 AI 同意
-                    appState.hasAgreedAIConsent = false
-                    UserDefaults.standard.set(false, forKey: "hasAgreedAIConsent")
-                } label: {
-                    settingsRowContent(icon: "arrow.uturn.backward.circle", title: "撤销 AI 数据授权")
-                }
-                .buttonStyle(.plain)
-                .opacity(appState.hasAgreedAIConsent ? 1 : 0.4)
-                .disabled(!appState.hasAgreedAIConsent)
+
             }
             .background(DS.Colors.surfaceContainerLow)
             .clipShape(RoundedRectangle(cornerRadius: DS.Radius.md))
@@ -483,5 +470,6 @@ extension ProfileView {
         }
         .padding(.horizontal, 20)
         .padding(.vertical, 16)
+        .contentShape(Rectangle())
     }
 }

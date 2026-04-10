@@ -187,7 +187,7 @@ extension LessonDetailView {
                                 Color.clear.frame(height: 1).id("thinkingBottom")
                             }
                             .frame(maxHeight: 150)
-                            .onChange(of: latestReasoningContent) { _ in
+                            .onChange(of: latestReasoningContent, initial: false) {
                                 withAnimation { proxy.scrollTo("thinkingBottom", anchor: .bottom) }
                             }
                         }
@@ -205,10 +205,10 @@ extension LessonDetailView {
                         // Auto-expand when thinking starts
                         if isThinking { isThinkingExpanded = true }
                     }
-                    .onChange(of: isThinking) { thinking in
-                        if thinking { withAnimation { isThinkingExpanded = true } }
+                    .onChange(of: isThinking, initial: false) {
+                        if isThinking { withAnimation { isThinkingExpanded = true } }
                         // Auto-collapse when thinking ends (content starts)
-                        if !thinking && !latestAssistantContent.isEmpty {
+                        if !isThinking && !latestAssistantContent.isEmpty {
                             withAnimation { isThinkingExpanded = false }
                         }
                     }
@@ -237,7 +237,7 @@ extension LessonDetailView {
                                 Color.clear.frame(height: 1).id("responseBottom")
                             }
                             .frame(maxHeight: 200)
-                            .onChange(of: latestAssistantContent) { _ in
+                            .onChange(of: latestAssistantContent, initial: false) {
                                 withAnimation { proxy.scrollTo("responseBottom", anchor: .bottom) }
                             }
                         }

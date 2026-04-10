@@ -56,7 +56,7 @@ class AppState: ObservableObject {
     // MARK: - 13 枚徽章定义
     static let allBadges: [BadgeDefinition] = [
         BadgeDefinition(id: 1,  imageName: "medal_001", title: "初学者",     description: "完成第一节课程",       conditionType: .completeFirstLesson, threshold: 1),
-        BadgeDefinition(id: 2,  imageName: "medal_002", title: "代码新星",   description: "第一次运行代码",       conditionType: .firstCodeRun,        threshold: 1),
+        BadgeDefinition(id: 2,  imageName: "medal_002", title: "智慧之星",   description: "第一次运行代码",       conditionType: .firstCodeRun,        threshold: 1),
         BadgeDefinition(id: 3,  imageName: "medal_003", title: "逻辑达人",   description: "完成 5 节课程",        conditionType: .completeLessons,     threshold: 5),
         BadgeDefinition(id: 4,  imageName: "medal_004", title: "循环大师",   description: "完成 10 节课程",       conditionType: .completeLessons,     threshold: 10),
         BadgeDefinition(id: 5,  imageName: "medal_005", title: "创意画家",   description: "保存 3 个作品",        conditionType: .saveWorks,           threshold: 3),

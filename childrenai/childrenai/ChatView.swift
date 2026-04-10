@@ -34,10 +34,10 @@ struct ChatView: View {
                     }
                     .scrollDismissesKeyboard(.interactively)
                     .onTapGesture { isInputFocused = false }
-                    .onChange(of: appState.chatMessages.count) { _ in
+                    .onChange(of: appState.chatMessages.count, initial: false) {
                         withAnimation { proxy.scrollTo("chatBottom", anchor: .bottom) }
                     }
-                    .onChange(of: lastMessageContent) { _ in
+                    .onChange(of: lastMessageContent, initial: false) {
                         withAnimation { proxy.scrollTo("chatBottom", anchor: .bottom) }
                     }
                 }
@@ -142,9 +142,9 @@ struct ChatView: View {
             DS.Colors.surfaceContainerLowest
                 .shadow(.drop(color: DS.Shadow.ambient, radius: 8, y: -4))
         )
-        .onChange(of: speechRecognizer.transcript) { newValue in
-            if !newValue.isEmpty {
-                inputText = newValue
+        .onChange(of: speechRecognizer.transcript, initial: false) {
+            if !speechRecognizer.transcript.isEmpty {
+                inputText = speechRecognizer.transcript
             }
         }
         .alert("语音输入提示", isPresented: .init(
