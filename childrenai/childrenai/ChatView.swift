@@ -156,8 +156,7 @@ struct ChatView: View {
             Text(speechRecognizer.errorMessage ?? "")
         }
         .onReceive(NotificationCenter.default.publisher(for: .startVoiceAfterConsent)) { _ in
-            isInputFocused = false
-            speechRecognizer.startRecording()
+            startVoiceAfterConsent()
         }
     }
 
@@ -165,14 +164,23 @@ struct ChatView: View {
         if speechRecognizer.isRecording {
             speechRecognizer.stopRecording()
         } else {
-            // 先检查 AI 数据授权
+            // 第一步：先检查 AI 数据授权
             if !appState.hasAgreedAIConsent {
                 appState.pendingVoiceStart = true
                 appState.showAIConsentDialog = true
                 return
             }
-            isInputFocused = false
-            speechRecognizer.startRecording()
+            // 第二步：AI已授权，再请求系统权限并开始录音
+            startVoiceAfterConsent()
+        }
+    }
+
+    private func startVoiceAfterConsent() {
+        isInputFocused = false
+        speechRecognizer.requestAuthorizationIfNeeded { granted in
+            if granted {
+                speechRecognizer.startRecording()
+            }
         }
     }
 

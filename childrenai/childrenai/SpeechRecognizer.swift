@@ -16,28 +16,42 @@ class SpeechRecognizer: ObservableObject {
     private let audioEngine = AVAudioEngine()
 
     init() {
-        checkAuthorization()
+        // 不在初始化时请求权限，等用户主动点击麦克风且同意AI授权后再请求
     }
 
     // MARK: - Authorization
-    func checkAuthorization() {
-        SFSpeechRecognizer.requestAuthorization { [weak self] status in
-            Task { @MainActor in
-                switch status {
-                case .authorized:
-                    self?.isAuthorized = true
-                case .denied:
-                    self?.errorMessage = "语音识别权限被拒绝，请在设置中开启"
-                    self?.isAuthorized = false
-                case .restricted:
-                    self?.errorMessage = "语音识别在此设备上不可用"
-                    self?.isAuthorized = false
-                case .notDetermined:
-                    self?.isAuthorized = false
-                @unknown default:
-                    self?.isAuthorized = false
+    /// 仅在用户主动触发时才请求权限，避免进入页面就弹系统弹窗
+    func requestAuthorizationIfNeeded(completion: @escaping (Bool) -> Void) {
+        let currentStatus = SFSpeechRecognizer.authorizationStatus()
+        switch currentStatus {
+        case .authorized:
+            isAuthorized = true
+            completion(true)
+        case .denied:
+            errorMessage = "语音识别权限被拒绝，请在「设置 → 隐私 → 语音识别」中开启"
+            isAuthorized = false
+            completion(false)
+        case .restricted:
+            errorMessage = "语音识别在此设备上不可用"
+            isAuthorized = false
+            completion(false)
+        case .notDetermined:
+            SFSpeechRecognizer.requestAuthorization { [weak self] status in
+                Task { @MainActor in
+                    switch status {
+                    case .authorized:
+                        self?.isAuthorized = true
+                        completion(true)
+                    default:
+                        self?.errorMessage = "需要语音识别权限才能使用语音输入"
+                        self?.isAuthorized = false
+                        completion(false)
+                    }
                 }
             }
+        @unknown default:
+            isAuthorized = false
+            completion(false)
         }
     }
 
