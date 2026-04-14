@@ -21,6 +21,7 @@ class AppState: ObservableObject {
     @Published var showAIConsentDialog: Bool = false
     var pendingAIMessage: String? = nil
     var pendingIsLesson: Bool = false
+    var pendingVoiceStart: Bool = false
     @Published var selectedTab: Int = 0
     @Published var homePath = NavigationPath()
     @Published var achievementsPath = NavigationPath()
@@ -109,11 +110,17 @@ class AppState: ObservableObject {
                 sendMessage(msg)
             }
         }
+        // 如果是从语音按钮触发的，标记待启动录音
+        if pendingVoiceStart {
+            pendingVoiceStart = false
+            NotificationCenter.default.post(name: .startVoiceAfterConsent, object: nil)
+        }
     }
 
     func declineAIConsent() {
         showAIConsentDialog = false
         pendingAIMessage = nil
+        pendingVoiceStart = false
     }
 
     func saveApiKey(_ key: String) {
@@ -554,3 +561,8 @@ class SSEStreamDelegate: NSObject, URLSessionDataDelegate {
     }
 }
 
+
+
+extension Notification.Name {
+    static let startVoiceAfterConsent = Notification.Name("startVoiceAfterConsent")
+}

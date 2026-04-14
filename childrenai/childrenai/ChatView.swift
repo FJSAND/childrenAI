@@ -155,12 +155,22 @@ struct ChatView: View {
         } message: {
             Text(speechRecognizer.errorMessage ?? "")
         }
+        .onReceive(NotificationCenter.default.publisher(for: .startVoiceAfterConsent)) { _ in
+            isInputFocused = false
+            speechRecognizer.startRecording()
+        }
     }
 
     private func toggleVoiceInput() {
         if speechRecognizer.isRecording {
             speechRecognizer.stopRecording()
         } else {
+            // 先检查 AI 数据授权
+            if !appState.hasAgreedAIConsent {
+                appState.pendingVoiceStart = true
+                appState.showAIConsentDialog = true
+                return
+            }
             isInputFocused = false
             speechRecognizer.startRecording()
         }
