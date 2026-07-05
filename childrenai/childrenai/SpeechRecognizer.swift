@@ -71,6 +71,11 @@ class SpeechRecognizer: ObservableObject {
             return
         }
 
+        // 如果已在录音，先停止
+        if audioEngine.isRunning {
+            stopRecording()
+        }
+
         // Reset
         recognitionTask?.cancel()
         recognitionTask = nil
@@ -92,6 +97,7 @@ class SpeechRecognizer: ObservableObject {
         recognitionRequest.shouldReportPartialResults = true
 
         let inputNode = audioEngine.inputNode
+        inputNode.removeTap(onBus: 0) // 移除已有 tap，防止重复安装导致崩溃
         let recordingFormat = inputNode.outputFormat(forBus: 0)
 
         inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { buffer, _ in

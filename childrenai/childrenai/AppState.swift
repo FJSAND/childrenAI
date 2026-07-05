@@ -18,10 +18,6 @@ class AppState: ObservableObject {
 
     // AI 隐私同意
     @Published var hasAgreedAIConsent: Bool = false
-    @Published var showAIConsentDialog: Bool = false
-    var pendingAIMessage: String? = nil
-    var pendingIsLesson: Bool = false
-    var pendingVoiceStart: Bool = false
     @Published var selectedTab: Int = 0
     @Published var homePath = NavigationPath()
     @Published var achievementsPath = NavigationPath()
@@ -101,26 +97,6 @@ class AppState: ObservableObject {
     func agreeAIConsent() {
         hasAgreedAIConsent = true
         UserDefaults.standard.set(true, forKey: "hasAgreedAIConsent")
-        // 发送之前暂存的消息
-        if let msg = pendingAIMessage {
-            pendingAIMessage = nil
-            if pendingIsLesson {
-                sendLessonMessage(msg)
-            } else {
-                sendMessage(msg)
-            }
-        }
-        // 如果是从语音按钮触发的，标记待启动录音
-        if pendingVoiceStart {
-            pendingVoiceStart = false
-            NotificationCenter.default.post(name: .startVoiceAfterConsent, object: nil)
-        }
-    }
-
-    func declineAIConsent() {
-        showAIConsentDialog = false
-        pendingAIMessage = nil
-        pendingVoiceStart = false
     }
 
     func saveApiKey(_ key: String) {
@@ -370,12 +346,7 @@ class AppState: ObservableObject {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
         if apiKey.isEmpty { showApiKeySheet = true; return }
-        if !hasAgreedAIConsent {
-            pendingAIMessage = trimmed
-            pendingIsLesson = false
-            showAIConsentDialog = true
-            return
-        }
+        guard hasAgreedAIConsent else { return }
         chatMessages.append(ChatMessage(role: .user, content: trimmed))
         chatHistory.append(["role": "user", "content": trimmed])
         recordMessageSent()
@@ -387,12 +358,7 @@ class AppState: ObservableObject {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
         if apiKey.isEmpty { showApiKeySheet = true; return }
-        if !hasAgreedAIConsent {
-            pendingAIMessage = trimmed
-            pendingIsLesson = true
-            showAIConsentDialog = true
-            return
-        }
+        guard hasAgreedAIConsent else { return }
         lessonMessages.append(ChatMessage(role: .user, content: trimmed))
         lessonChatHistory.append(["role": "user", "content": trimmed])
         recordMessageSent()
@@ -417,10 +383,11 @@ class AppState: ObservableObject {
         messages.append(contentsOf: history)
 
         let body: [String: Any] = [
-            "model": "deepseek-reasoner",
+            "model": "deepseek-v4-flash",
             "messages": messages,
             "stream": true,
-            "max_tokens": 16384
+            "max_tokens": 4096,
+            "temperature": 0.7
         ]
 
         guard let url = URL(string: "https://api.deepseek.com/chat/completions"),
@@ -434,12 +401,12 @@ class AppState: ObservableObject {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
         request.httpBody = jsonData
-        request.timeoutInterval = 300 // 5 minutes for reasoning model
+        request.timeoutInterval = 120
 
         let delegate = SSEStreamDelegate(appState: self, msgIndex: msgIndex, isLesson: isLesson)
         let config = URLSessionConfiguration.default
-        config.timeoutIntervalForRequest = 300
-        config.timeoutIntervalForResource = 600
+        config.timeoutIntervalForRequest = 120
+        config.timeoutIntervalForResource = 180
         let session = URLSession(configuration: config, delegate: delegate, delegateQueue: nil)
         let task = session.dataTask(with: request)
         self.activeDelegate = delegate
@@ -559,10 +526,4 @@ class SSEStreamDelegate: NSObject, URLSessionDataDelegate {
             appState.activeDelegate = nil
         }
     }
-}
-
-
-
-extension Notification.Name {
-    static let startVoiceAfterConsent = Notification.Name("startVoiceAfterConsent")
 }

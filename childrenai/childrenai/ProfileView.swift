@@ -4,12 +4,16 @@ struct ProfileView: View {
     @EnvironmentObject var appState: AppState
     @State private var showApiKeyDialog = false
     @State private var showAboutDialog = false
-    @State private var apiKeyInput = ""
-    @State private var dialogScale: CGFloat = 0.6
-    @State private var dialogOpacity: Double = 0
     @State private var aboutDialogScale: CGFloat = 0.6
     @State private var aboutDialogOpacity: Double = 0
     @State private var showPrivacyPolicy = false
+
+    private var appVersion: String {
+        let info = Bundle.main.infoDictionary
+        let version = info?["CFBundleShortVersionString"] as? String ?? "1.0"
+        let build = info?["CFBundleVersion"] as? String ?? "1"
+        return "\(version) (\(build))"
+    }
 
     var body: some View {
         ZStack {
@@ -27,135 +31,17 @@ struct ProfileView: View {
 
             // MARK: - Custom API Key Dialog
             if showApiKeyDialog {
-                apiKeyDialogOverlay
+                ApiKeySetupSheet(onSave: {
+                    showApiKeyDialog = false
+                }, onCancel: {
+                    showApiKeyDialog = false
+                })
             }
 
             // MARK: - About Dialog
             if showAboutDialog {
                 aboutDialogOverlay
             }
-        }
-    }
-
-    // MARK: - Dialog Overlay
-    private var apiKeyDialogOverlay: some View {
-        ZStack {
-            // Dimmed background
-            Color.black.opacity(0.35)
-                .ignoresSafeArea()
-                .onTapGesture { dismissDialog() }
-
-            // Dialog card
-            VStack(spacing: 0) {
-                // Header
-                VStack(spacing: DS.Spacing.sm) {
-                    ZStack {
-                        Circle()
-                            .fill(DS.Colors.primaryContainer.opacity(0.3))
-                            .frame(width: 56, height: 56)
-                        Image(systemName: "cpu.fill")
-                            .font(.system(size: 24))
-                            .foregroundColor(DS.Colors.primary)
-                    }
-
-                    Text("DeepSeek 设置")
-                        .font(.system(size: 20, weight: .bold))
-                        .foregroundColor(DS.Colors.onBackground)
-
-                    Text("请输入 DeepSeek API Key 以启用 AI 功能")
-                        .font(.system(size: 14))
-                        .foregroundColor(DS.Colors.onSurfaceVariant)
-                        .multilineTextAlignment(.center)
-                }
-                .padding(.top, DS.Spacing.lg)
-                .padding(.horizontal, DS.Spacing.lg)
-
-                // Input field
-                TextField("sk-xxxxxxxxxxxxxxxx", text: $apiKeyInput)
-                    .font(.system(size: 15, design: .monospaced))
-                    .autocorrectionDisabled()
-                    .textInputAutocapitalization(.never)
-                    .padding(DS.Spacing.md)
-                    .background(DS.Colors.surfaceContainerLow)
-                    .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: DS.Radius.sm)
-                            .stroke(DS.Colors.outlineVariant.opacity(0.5), lineWidth: 1)
-                    )
-                    .padding(.horizontal, DS.Spacing.lg)
-                    .padding(.top, DS.Spacing.lg)
-
-                // Hint link
-                HStack(spacing: 4) {
-                    Image(systemName: "link")
-                        .font(.system(size: 11))
-                    Text("点击前往 platform.deepseek.com 获取")
-                        .font(.system(size: 12))
-                }
-                .foregroundColor(DS.Colors.primary.opacity(0.8))
-                .padding(.top, DS.Spacing.sm)
-                .onTapGesture {
-                    if let url = URL(string: "https://platform.deepseek.com") {
-                        UIApplication.shared.open(url)
-                    }
-                }
-
-                // Buttons
-                HStack(spacing: DS.Spacing.md) {
-                    Button { dismissDialog() } label: {
-                        Text("取消")
-                            .font(.system(size: 15, weight: .semibold))
-                            .foregroundColor(DS.Colors.onSurfaceVariant)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 14)
-                            .background(DS.Colors.surfaceContainerLow)
-                            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm))
-                    }
-
-                    Button {
-                        appState.saveApiKey(apiKeyInput)
-                        dismissDialog()
-                    } label: {
-                        Text("保存")
-                            .font(.system(size: 15, weight: .bold))
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 14)
-                            .background(DS.Colors.primary)
-                            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm))
-                    }
-                }
-                .padding(DS.Spacing.lg)
-            }
-            .background(DS.Colors.surfaceContainerLowest)
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
-            .shadow(color: DS.Colors.onBackground.opacity(0.15), radius: 30, y: 15)
-            .padding(.horizontal, 36)
-            .scaleEffect(dialogScale)
-            .opacity(dialogOpacity)
-        }
-        .onAppear {
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.75)) {
-                dialogScale = 1.0
-                dialogOpacity = 1.0
-            }
-        }
-    }
-
-    private func showDialog() {
-        apiKeyInput = appState.apiKey
-        dialogScale = 0.6
-        dialogOpacity = 0
-        showApiKeyDialog = true
-    }
-
-    private func dismissDialog() {
-        withAnimation(.easeOut(duration: 0.2)) {
-            dialogScale = 0.6
-            dialogOpacity = 0
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            showApiKeyDialog = false
         }
     }
 
@@ -188,7 +74,7 @@ struct ProfileView: View {
 
                 // Info rows
                 VStack(spacing: 0) {
-                    aboutInfoRow(label: "版本", value: "1.0.0")
+                    aboutInfoRow(label: "版本", value: appVersion)
                     Divider().padding(.leading, 20)
                     aboutInfoRow(label: "作者", value: "大朗拿度")
                 }
@@ -416,7 +302,7 @@ extension ProfileView {
             VStack(spacing: 0) {
                 // 大模型设置 — 弹出 API Key 输入框
                 Button {
-                    showDialog()
+                    showApiKeyDialog = true
                 } label: {
                     settingsRowContent(icon: "cpu.fill", title: "DeepSeek 设置")
                 }
@@ -425,17 +311,17 @@ extension ProfileView {
                 dividerLine
 
                 Button {
-                    showAboutDialogAction()
+                    showPrivacyPolicy = true
                 } label: {
-                    settingsRowContent(icon: "info.circle", title: "关于")
+                    settingsRowContent(icon: "shield.fill", title: "隐私政策")
                 }
                 .buttonStyle(.plain)
 
                 dividerLine
                 Button {
-                    showPrivacyPolicy = true
+                    showAboutDialogAction()
                 } label: {
-                    settingsRowContent(icon: "shield.fill", title: "隐私政策")
+                    settingsRowContent(icon: "info.circle", title: "关于")
                 }
                 .buttonStyle(.plain)
 

@@ -45,7 +45,7 @@ struct AllBadgesView: View {
 
                     LazyVGrid(columns: columns, spacing: DS.Spacing.lg) {
                         ForEach(achievementBadges) { badge in
-                            badgeCard(badge)
+                            badgeCard(badge, showDescription: false)
                         }
                     }
                     .padding(.horizontal, DS.Spacing.lg)
@@ -156,7 +156,7 @@ struct AllBadgesView: View {
     }
 
     // MARK: - Badge Card
-    private func badgeCard(_ badge: BadgeDefinition) -> some View {
+    private func badgeCard(_ badge: BadgeDefinition, showDescription: Bool = true) -> some View {
         let unlocked = unlockedIds.contains(badge.id)
         let isRedeemable = badge.conditionType == .redeemPoints && !unlocked
 
@@ -180,12 +180,14 @@ struct AllBadgesView: View {
                 .foregroundColor(unlocked ? DS.Colors.onBackground : DS.Colors.onSurfaceVariant)
                 .lineLimit(1)
 
-            Text(badge.description)
-                .font(.system(size: 10))
-                .foregroundColor(DS.Colors.onSurfaceVariant)
-                .multilineTextAlignment(.center)
-                .lineLimit(2)
-                .frame(height: 28)
+            if showDescription {
+                Text(badge.description)
+                    .font(.system(size: 10))
+                    .foregroundColor(DS.Colors.onSurfaceVariant)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(2)
+                    .frame(height: 28)
+            }
 
             if isRedeemable {
                 Button {

@@ -2,31 +2,67 @@ import SwiftUI
 
 struct LessonDetailView: View {
     @EnvironmentObject var appState: AppState
+    @Environment(\.dismiss) private var dismiss
     let lesson: Lesson
     @State private var isThinkingExpanded = false
+    @State private var showPrivacyConsent = false
+    @State private var showApiKeySetup = false
 
     var body: some View {
-        ScrollView(showsIndicators: false) {
-            VStack(alignment: .leading, spacing: DS.Spacing.lg) {
-                // Lesson Info Card
-                lessonInfoCard
-                // Step 1: Input Instruction
-                step1Section
-                // Step 2: AI Generates
-                step2Section
-                // Step 3: Result & Effect
-                step3Section
-                // Task Checklist
-                taskChecklist
-                // Pro Tip
-                proTipCard
+        ZStack {
+            ScrollView(showsIndicators: false) {
+                VStack(alignment: .leading, spacing: DS.Spacing.lg) {
+                    // Lesson Info Card
+                    lessonInfoCard
+                    // Step 1: Input Instruction
+                    step1Section
+                    // Step 2: AI Generates
+                    step2Section
+                    // Step 3: Result & Effect
+                    step3Section
+                    // Task Checklist
+                    taskChecklist
+                    // Pro Tip
+                    proTipCard
+                }
+                .padding(.horizontal, DS.Spacing.md)
+                .padding(.top, DS.Spacing.md)
+                .padding(.bottom, 120)
             }
-            .padding(.horizontal, DS.Spacing.md)
-            .padding(.top, DS.Spacing.md)
-            .padding(.bottom, 120)
+            .background(DS.Colors.surface.ignoresSafeArea())
+            .navigationBarTitleDisplayMode(.inline)
+            .onAppear {
+                // 进入课程详情页时，先检查隐私政策，再检查 API Key
+                if !appState.hasAgreedAIConsent {
+                    showPrivacyConsent = true
+                } else if appState.apiKey.isEmpty {
+                    showApiKeySetup = true
+                }
+            }
+            .sheet(isPresented: $showPrivacyConsent) {
+                PrivacyPolicyView(mode: .consent, onAgree: {
+                    appState.agreeAIConsent()
+                    // 隐私同意后，检查 API Key
+                    if appState.apiKey.isEmpty {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                            showApiKeySetup = true
+                        }
+                    }
+                }, onCancel: {
+                    dismiss()
+                })
+            }
+
+            // API Key overlay
+            if showApiKeySetup {
+                ApiKeySetupSheet(onSave: {
+                    showApiKeySetup = false
+                }, onCancel: {
+                    showApiKeySetup = false
+                    dismiss()
+                })
+            }
         }
-        .background(DS.Colors.surface.ignoresSafeArea())
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

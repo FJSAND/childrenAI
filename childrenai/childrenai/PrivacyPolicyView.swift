@@ -1,7 +1,16 @@
 import SwiftUI
 
+/// Mode for PrivacyPolicyView display
+enum PrivacyPolicyMode {
+    case view      // 仅查看（我的页面），右上角"关闭"
+    case consent   // 需要同意（魔法画室/课程详情），左上"取消"、右上"同意"
+}
+
 struct PrivacyPolicyView: View {
     @Environment(\.dismiss) private var dismiss
+    var mode: PrivacyPolicyMode = .view
+    var onAgree: (() -> Void)? = nil
+    var onCancel: (() -> Void)? = nil
 
     var body: some View {
         NavigationStack {
@@ -70,11 +79,31 @@ struct PrivacyPolicyView: View {
             .navigationTitle("隐私政策")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("关闭") { dismiss() }
+                switch mode {
+                case .view:
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button("关闭") { dismiss() }
+                            .foregroundColor(DS.Colors.primary)
+                    }
+                case .consent:
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button("取消") {
+                            dismiss()
+                            onCancel?()
+                        }
+                        .foregroundColor(DS.Colors.onSurfaceVariant)
+                    }
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        Button("同意") {
+                            dismiss()
+                            onAgree?()
+                        }
+                        .font(.system(size: 17, weight: .semibold))
                         .foregroundColor(DS.Colors.primary)
+                    }
                 }
             }
+            .interactiveDismissDisabled(mode == .consent)
         }
     }
 

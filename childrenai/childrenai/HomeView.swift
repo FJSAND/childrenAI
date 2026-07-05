@@ -378,7 +378,7 @@ struct GradeLevelCard: View {
     private var subtitleIcon: String {
         switch level {
         case .low: return "pencil.line"
-        case .mid: return "rocket.fill"
+        case .mid: return "flame.fill"
         case .high: return "terminal.fill"
         }
     }

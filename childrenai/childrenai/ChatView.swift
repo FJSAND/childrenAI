@@ -6,6 +6,8 @@ struct ChatView: View {
     @State private var inputText = ""
     @FocusState private var isInputFocused: Bool
     @StateObject private var speechRecognizer = SpeechRecognizer()
+    @State private var showPrivacyConsent = false
+    @State private var showApiKeySetup = false
 
     /// Track last message content for auto-scroll
     private var lastMessageContent: String {
@@ -14,6 +16,7 @@ struct ChatView: View {
     }
 
     var body: some View {
+        ZStack {
             VStack(spacing: 0) {
                 // Messages
                 ScrollViewReader { proxy in
@@ -67,8 +70,38 @@ struct ChatView: View {
                 if let lesson = appState.selectedLesson, inputText.isEmpty {
                     inputText = lesson.prompt
                 }
+                // 进入魔法画室时，先检查隐私政策，再检查 API Key
+                if !appState.hasAgreedAIConsent {
+                    showPrivacyConsent = true
+                } else if appState.apiKey.isEmpty {
+                    showApiKeySetup = true
+                }
             }
             .navigationBarBackButtonHidden(true)
+            .sheet(isPresented: $showPrivacyConsent) {
+                PrivacyPolicyView(mode: .consent, onAgree: {
+                    appState.agreeAIConsent()
+                    // 隐私同意后，检查 API Key
+                    if appState.apiKey.isEmpty {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                            showApiKeySetup = true
+                        }
+                    }
+                }, onCancel: {
+                    dismiss()
+                })
+            }
+
+            // API Key overlay
+            if showApiKeySetup {
+                ApiKeySetupSheet(onSave: {
+                    showApiKeySetup = false
+                }, onCancel: {
+                    showApiKeySetup = false
+                    dismiss()
+                })
+            }
+        }
     }
 
     private var inputBar: some View {
@@ -155,31 +188,18 @@ struct ChatView: View {
         } message: {
             Text(speechRecognizer.errorMessage ?? "")
         }
-        .onReceive(NotificationCenter.default.publisher(for: .startVoiceAfterConsent)) { _ in
-            startVoiceAfterConsent()
-        }
     }
 
     private func toggleVoiceInput() {
         if speechRecognizer.isRecording {
             speechRecognizer.stopRecording()
         } else {
-            // 第一步：先检查 AI 数据授权
-            if !appState.hasAgreedAIConsent {
-                appState.pendingVoiceStart = true
-                appState.showAIConsentDialog = true
-                return
-            }
-            // 第二步：AI已授权，再请求系统权限并开始录音
-            startVoiceAfterConsent()
-        }
-    }
-
-    private func startVoiceAfterConsent() {
-        isInputFocused = false
-        speechRecognizer.requestAuthorizationIfNeeded { granted in
-            if granted {
-                speechRecognizer.startRecording()
+            // 隐私授权已在进入页面时完成，直接请求系统权限并开始录音
+            isInputFocused = false
+            speechRecognizer.requestAuthorizationIfNeeded { granted in
+                if granted {
+                    speechRecognizer.startRecording()
+                }
             }
         }
     }

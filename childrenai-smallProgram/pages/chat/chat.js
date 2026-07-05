@@ -92,7 +92,7 @@ Page({
         'Authorization': 'Bearer ' + app.globalData.apiKey
       },
       data: {
-        model: 'deepseek-chat',
+        model: 'deepseek-v4-flash',
         stream: true,
         messages: [
           { role: 'system', content: systemPrompt },

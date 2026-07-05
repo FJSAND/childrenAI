@@ -203,7 +203,7 @@ extension AchievementsView {
                 Circle()
                     .fill(DS.Colors.surfaceVariant)
                     .frame(width: 52, height: 52)
-                Image(systemName: "rocket.fill")
+                Image(systemName: "flame.fill")
                     .font(.system(size: 22))
                     .foregroundColor(DS.Colors.onSurfaceVariant)
             }

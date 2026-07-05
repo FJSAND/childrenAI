@@ -2,19 +2,14 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var appState: AppState
-    @State private var apiKeyInput = ""
-    @State private var dialogScale: CGFloat = 0.6
-    @State private var dialogOpacity: Double = 0
+
 
     // Welcome dialog
     @State private var showWelcomeDialog = false
     @State private var welcomeScale: CGFloat = 0.6
     @State private var welcomeOpacity: Double = 0
 
-    // AI consent dialog
-    @State private var consentScale: CGFloat = 0.6
-    @State private var consentOpacity: Double = 0
-    @State private var showPrivacyPolicy = false
+
 
     var body: some View {
         ZStack {
@@ -75,10 +70,14 @@ struct ContentView: View {
                 .zIndex(999)
             }
 
-            // Global API Key dialog (replaces old sheet)
+            // Global API Key dialog
             if appState.showApiKeySheet {
-                globalApiKeyDialog
-                    .zIndex(998)
+                ApiKeySetupSheet(onSave: {
+                    appState.showApiKeySheet = false
+                }, onCancel: {
+                    appState.showApiKeySheet = false
+                })
+                .zIndex(998)
             }
 
             // Welcome dialog (first launch)
@@ -87,11 +86,7 @@ struct ContentView: View {
                     .zIndex(997)
             }
 
-            // AI consent dialog
-            if appState.showAIConsentDialog {
-                aiConsentDialogOverlay
-                    .zIndex(996)
-            }
+
         }
         .onAppear {
             let hasLaunched = UserDefaults.standard.bool(forKey: "hasLaunchedBefore")
@@ -102,122 +97,7 @@ struct ContentView: View {
         }
     }
 
-    // MARK: - Global API Key Dialog
-    private var globalApiKeyDialog: some View {
-        ZStack {
-            Color.black.opacity(0.35)
-                .ignoresSafeArea()
-                .onTapGesture { dismissGlobalDialog() }
 
-            VStack(spacing: 0) {
-                // Header
-                VStack(spacing: DS.Spacing.sm) {
-                    ZStack {
-                        Circle()
-                            .fill(DS.Colors.primaryContainer.opacity(0.3))
-                            .frame(width: 56, height: 56)
-                        Image(systemName: "cpu.fill")
-                            .font(.system(size: 24))
-                            .foregroundColor(DS.Colors.primary)
-                    }
-
-                    Text("DeepSeek 设置")
-                        .font(.system(size: 20, weight: .bold))
-                        .foregroundColor(DS.Colors.onBackground)
-
-                    Text("请输入 DeepSeek API Key 以启用 AI 功能")
-                        .font(.system(size: 14))
-                        .foregroundColor(DS.Colors.onSurfaceVariant)
-                        .multilineTextAlignment(.center)
-                }
-                .padding(.top, DS.Spacing.lg)
-                .padding(.horizontal, DS.Spacing.lg)
-
-                // Input field
-                TextField("sk-xxxxxxxxxxxxxxxx", text: $apiKeyInput)
-                    .font(.system(size: 15, design: .monospaced))
-                    .autocorrectionDisabled()
-                    .textInputAutocapitalization(.never)
-                    .padding(DS.Spacing.md)
-                    .background(DS.Colors.surfaceContainerLow)
-                    .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm))
-                    .overlay(
-                        RoundedRectangle(cornerRadius: DS.Radius.sm)
-                            .stroke(DS.Colors.outlineVariant.opacity(0.5), lineWidth: 1)
-                    )
-                    .padding(.horizontal, DS.Spacing.lg)
-                    .padding(.top, DS.Spacing.lg)
-
-                // Hint link
-                HStack(spacing: 4) {
-                    Image(systemName: "link")
-                        .font(.system(size: 11))
-                    Text("点击前往 platform.deepseek.com 获取")
-                        .font(.system(size: 12))
-                }
-                .foregroundColor(DS.Colors.primary.opacity(0.8))
-                .padding(.top, DS.Spacing.sm)
-                .onTapGesture {
-                    if let url = URL(string: "https://platform.deepseek.com") {
-                        UIApplication.shared.open(url)
-                    }
-                }
-
-                // Buttons
-                HStack(spacing: DS.Spacing.md) {
-                    Button { dismissGlobalDialog() } label: {
-                        Text("取消")
-                            .font(.system(size: 15, weight: .semibold))
-                            .foregroundColor(DS.Colors.onSurfaceVariant)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 14)
-                            .background(DS.Colors.surfaceContainerLow)
-                            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm))
-                    }
-
-                    Button {
-                        appState.saveApiKey(apiKeyInput)
-                        dismissGlobalDialog()
-                    } label: {
-                        Text("保存")
-                            .font(.system(size: 15, weight: .bold))
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 14)
-                            .background(DS.Colors.primary)
-                            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm))
-                    }
-                    .disabled(apiKeyInput.trimmingCharacters(in: .whitespaces).isEmpty)
-                }
-                .padding(DS.Spacing.lg)
-            }
-            .background(DS.Colors.surfaceContainerLowest)
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
-            .shadow(color: DS.Colors.onBackground.opacity(0.15), radius: 30, y: 15)
-            .padding(.horizontal, 36)
-            .scaleEffect(dialogScale)
-            .opacity(dialogOpacity)
-        }
-        .onAppear {
-            apiKeyInput = appState.apiKey
-            dialogScale = 0.6
-            dialogOpacity = 0
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.75)) {
-                dialogScale = 1.0
-                dialogOpacity = 1.0
-            }
-        }
-    }
-
-    private func dismissGlobalDialog() {
-        withAnimation(.easeOut(duration: 0.2)) {
-            dialogScale = 0.6
-            dialogOpacity = 0
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            appState.showApiKeySheet = false
-        }
-    }
 
     // MARK: - Welcome Dialog (First Launch)
     private var welcomeDialogOverlay: some View {
@@ -285,143 +165,6 @@ struct ContentView: View {
         }
     }
 
-    // MARK: - AI Consent Dialog
-    private var aiConsentDialogOverlay: some View {
-        ZStack {
-            Color.black.opacity(0.35)
-                .ignoresSafeArea()
-
-            ScrollView {
-                VStack(spacing: 0) {
-                    VStack(spacing: DS.Spacing.sm) {
-                        ZStack {
-                            Circle()
-                                .fill(DS.Colors.primaryContainer.opacity(0.3))
-                                .frame(width: 56, height: 56)
-                            Image(systemName: "hand.raised.fill")
-                                .font(.system(size: 24))
-                                .foregroundColor(DS.Colors.primary)
-                        }
-
-                        Text("第三方 AI 服务数据授权")
-                            .font(.system(size: 20, weight: .bold))
-                            .foregroundColor(DS.Colors.onBackground)
-                    }
-                    .padding(.top, DS.Spacing.lg)
-                    .padding(.horizontal, DS.Spacing.lg)
-
-                    // Detailed disclosure
-                    VStack(alignment: .leading, spacing: 12) {
-                        consentInfoRow(icon: "doc.text", title: "发送的数据",
-                            detail: "您在对话中输入的文字消息将被发送至第三方服务以生成 AI 回复。我们不会发送您的姓名、手机号、位置或其他个人身份信息。")
-
-                        consentInfoRow(icon: "building.2", title: "数据接收方",
-                            detail: "您的对话内容将发送至 DeepSeek（深度求索，deepseek.com），由其 AI 模型处理并返回回复内容。")
-
-                        consentInfoRow(icon: "shield.checkered", title: "数据保护",
-                            detail: "数据通过 HTTPS 加密传输。DeepSeek 按其隐私政策处理数据，不会将您的对话内容用于向第三方营销。")
-
-                        consentInfoRow(icon: "xmark.circle", title: "拒绝的影响",
-                            detail: "如果您不同意，将无法使用 AI 对话功能，但仍可浏览课程内容。")
-                    }
-                    .padding(.horizontal, DS.Spacing.lg)
-                    .padding(.top, DS.Spacing.md)
-
-                    // Privacy policy link
-                    Button {
-                        showPrivacyPolicy = true
-                    } label: {
-                        HStack(spacing: 4) {
-                            Image(systemName: "doc.text.magnifyingglass")
-                                .font(.system(size: 12))
-                            Text("查看完整隐私政策")
-                                .font(.system(size: 13, weight: .medium))
-                        }
-                        .foregroundColor(DS.Colors.primary)
-                    }
-                    .padding(.top, DS.Spacing.sm)
-
-                    HStack(spacing: DS.Spacing.md) {
-                        Button {
-                            dismissConsentDialog()
-                            appState.declineAIConsent()
-                        } label: {
-                            Text("不同意")
-                                .font(.system(size: 15, weight: .semibold))
-                                .foregroundColor(DS.Colors.onSurfaceVariant)
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 14)
-                                .background(DS.Colors.surfaceContainerLow)
-                                .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm))
-                        }
-
-                        Button {
-                            dismissConsentDialog()
-                            appState.agreeAIConsent()
-                        } label: {
-                            Text("同意并继续")
-                                .font(.system(size: 15, weight: .bold))
-                                .foregroundColor(.white)
-                                .frame(maxWidth: .infinity)
-                                .padding(.vertical, 14)
-                                .background(DS.Colors.primary)
-                                .clipShape(RoundedRectangle(cornerRadius: DS.Radius.sm))
-                        }
-                    }
-                    .padding(DS.Spacing.lg)
-                }
-                .background(DS.Colors.surfaceContainerLowest)
-                .clipShape(RoundedRectangle(cornerRadius: DS.Radius.lg))
-                .shadow(color: DS.Colors.onBackground.opacity(0.15), radius: 30, y: 15)
-                .padding(.horizontal, 28)
-                .padding(.vertical, 60)
-            }
-            .scaleEffect(consentScale)
-            .opacity(consentOpacity)
-        }
-        .onAppear {
-            consentScale = 0.6
-            consentOpacity = 0
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.75)) {
-                consentScale = 1.0
-                consentOpacity = 1.0
-            }
-        }
-        .sheet(isPresented: $showPrivacyPolicy) {
-            PrivacyPolicyView()
-        }
-    }
-
-    private func consentInfoRow(icon: String, title: String, detail: String) -> some View {
-        HStack(alignment: .top, spacing: 12) {
-            Image(systemName: icon)
-                .font(.system(size: 16))
-                .foregroundColor(DS.Colors.primary)
-                .frame(width: 24, height: 24)
-                .padding(.top, 2)
-
-            VStack(alignment: .leading, spacing: 4) {
-                Text(title)
-                    .font(.system(size: 14, weight: .bold))
-                    .foregroundColor(DS.Colors.onSurface)
-                Text(detail)
-                    .font(.system(size: 13))
-                    .foregroundColor(DS.Colors.onSurfaceVariant)
-                    .lineSpacing(3)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-        }
-    }
-
-    private func dismissConsentDialog() {
-        withAnimation(.easeOut(duration: 0.2)) {
-            consentScale = 0.6
-            consentOpacity = 0
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            appState.showAIConsentDialog = false
-        }
-    }
 }
 
 // MARK: - Settings View
